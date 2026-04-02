@@ -30,9 +30,6 @@
   --transition: 0.15s linear;
 }
 
-@use "variables" as *;
-@use "sass-mixins" as *;
-
 body {
   background-color: var(--background);
   font-family: var(--primary-font);
