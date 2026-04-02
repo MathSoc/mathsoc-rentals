@@ -1,0 +1,31 @@
+// Colours
+:root {
+  --background: #fff;
+  --background-2: #f8f8f8;
+  --background-3: #efefef;
+  --background-hover: var(--background-2);
+  --mathsoc-pink: #c60078;
+  --mathsoc-pink-2: #df2498;
+  --mathsoc-pink-3: #ff63aa;
+  --mathsoc-pink-4: #ffbeef;
+  --mathsoc-grey: #212934;
+  --mathsoc-grey-2: #4a4e57;
+  --accent-colour-1: var(--mathsoc-pink);
+  --accent-colour-2: var(--mathsoc-grey);
+  --text-color: var(--mathsoc-grey-2);
+  --inverted-text-color: #ffffff;
+}
+
+// Fonts
+:root {
+  --primary-font: "Open Sans", Verdana, sans-serif;
+  --title-font: "Open Sans", Verdana, sans-serif;
+}
+
+// Measurements
+:root {
+  --content-width: 650px;
+  --navbar-height: 75px;
+
+  --transition: 0.15s linear;
+}
