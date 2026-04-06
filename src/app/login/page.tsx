@@ -17,7 +17,7 @@ export default function AuthDebug() {
   return (
     <main>
       <div className="sign-in-container">
-        <div style={{ width: "300px" }}>
+        <div className="logo-container">
           <Image
             src="/img/icons/vertical-logo.svg"
             alt=""
