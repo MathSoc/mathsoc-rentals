@@ -4,3 +4,4 @@ cd ../mathsoc-rentals-worker
 echo "Running worker..."
 
 npx wrangler dev
+
