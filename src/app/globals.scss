@@ -15,9 +15,11 @@ body {
   font-weight: 300;
 }
 
-#main-content {
+#body-contents {
   flex-grow: 1;
   display: flex;
+  margin: 0 16px;
+  max-width: 1200px;
 }
 
 h1,

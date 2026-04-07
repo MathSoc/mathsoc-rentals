@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Electrolize } from "next/font/google";
 import "./globals.scss";
 import { Providers } from "./providers";
+import { Navigation } from "./components/navbar/navbar";
 
 const titleFont = Electrolize({
   variable: "--primary-font",
@@ -25,7 +26,10 @@ export default function RootLayout({
         <link rel="icon" href="/img/icons/favicon.svg" sizes="any" />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navigation />
+          <div id="body-contents">{children}</div>
+        </Providers>
       </body>
     </html>
   );

@@ -1,0 +1,16 @@
+.nav-container {
+  height: 64px;
+  padding: 0 16px;
+  width: 100%;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+
+  div {
+    display: flex;
+    align-items: center;
+  }
+
+  .site-title {
+    font-size: 2rem;
+  }
+}
