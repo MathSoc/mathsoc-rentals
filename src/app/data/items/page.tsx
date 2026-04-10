@@ -1,6 +1,10 @@
 "use client";
 
+import { Button } from "@/app/components/button/button.client";
+import { DrawerPanel } from "@/app/components/drawer/drawer.client";
+import { Row } from "@/app/components/layout/layout-components";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import "./items.scss";
 
 type Item = {
@@ -30,6 +34,8 @@ async function fetchItems(): Promise<ItemsResponse> {
 
 // @todo use SSR for table data fetching
 export default function ItemsPage() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   const { data, isPending, isError } = useQuery({
     queryKey: ["items"],
     queryFn: fetchItems,
@@ -40,11 +46,16 @@ export default function ItemsPage() {
 
   return (
     <main className="wide-contents">
-      <h1>Items</h1>
+      <Row className="title-row">
+        <h1>Items</h1>
+        <Button variant="pink" onClick={() => setDrawerOpen(true)}>
+          Create new
+        </Button>
+      </Row>
+
       <table className="items-table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Type</th>
             <th>BGG ID</th>
@@ -53,7 +64,6 @@ export default function ItemsPage() {
         <tbody>
           {data.data.map((item) => (
             <tr key={item.id}>
-              <td>{item.id}</td>
               <td>{item.name}</td>
               <td>{item.type}</td>
               <td>{item.boardGameId}</td>
@@ -61,6 +71,12 @@ export default function ItemsPage() {
           ))}
         </tbody>
       </table>
+
+      <DrawerPanel
+        open={drawerOpen}
+        onOpenChange={setDrawerOpen}
+        title="Create new item"
+      />
     </main>
   );
 }

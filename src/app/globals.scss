@@ -115,7 +115,6 @@ strong {
 
 table {
   width: 100%;
-  margin: 24px 0;
   border-collapse: collapse;
   font-size: 0.8rem;
 
@@ -146,4 +145,8 @@ table {
       background-color: var(--background-2);
     }
   }
+}
+
+.root {
+  isolation: isolate;
 }

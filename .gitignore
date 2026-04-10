@@ -40,6 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+#llms
+.claude
+
 # custom
 ## prefer pnpm 
 package-lock.json 
+

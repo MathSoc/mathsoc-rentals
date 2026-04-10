@@ -1,0 +1,41 @@
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 1;
+  transition: opacity 0.3s;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
+.drawer-popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  background: var(--background);
+  border-left: 1px solid var(--border);
+  padding: 24px;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+  transform: translateX(var(--drawer-swipe-movement-x, 0));
+  transition: transform 0.3s;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    transform: translateX(100%);
+  }
+
+  &[data-swiping] {
+    transition-duration: 0ms;
+  }
+}
+
+.drawer-title {
+  margin: 0 0 16px;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
