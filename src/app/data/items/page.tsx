@@ -5,6 +5,7 @@ import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Row } from "@/app/components/layout/layout-components";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { CreateItemForm } from "./create-item-form";
 import "./items.scss";
 
 type Item = {
@@ -76,7 +77,9 @@ export default function ItemsPage() {
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
         title="Create new item"
-      />
+      >
+        <CreateItemForm onSuccess={() => setDrawerOpen(false)} />
+      </DrawerPanel>
     </main>
   );
 }
