@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Electrolize } from "next/font/google";
+import { Navigation } from "./components/navbar/navbar";
 import "./globals.scss";
 import { Providers } from "./providers";
-import { Navigation } from "./components/navbar/navbar";
 
 const titleFont = Electrolize({
   variable: "--primary-font",
@@ -27,8 +27,11 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <Navigation />
-          <div id="body-contents">{children}</div>
+          {/* root needed for baseUI drawers */}
+          <div className="root">
+            <Navigation />
+            <div id="body-contents">{children}</div>
+          </div>
         </Providers>
       </body>
     </html>
