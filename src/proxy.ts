@@ -6,7 +6,7 @@ export default withAuth({
   },
   callbacks: {
     // Automatically authorize all requests in development
-    authorized: ({ token }) => process.env.DISABLE_AUTH === "true" || !!token,
+    // authorized: ({ token }) => process.env.DISABLE_AUTH === "true" || !!token,
   },
 });
 
