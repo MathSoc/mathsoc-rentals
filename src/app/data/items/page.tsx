@@ -3,7 +3,6 @@
 import { Button } from "@/app/components/button/button.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Row } from "@/app/components/layout/layout-components";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CreateItemForm } from "./create-item-form";
 import "./items.scss";
@@ -37,13 +36,13 @@ async function fetchItems(): Promise<ItemsResponse> {
 export default function ItemsPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { data, isPending, isError } = useQuery({
-    queryKey: ["items"],
-    queryFn: fetchItems,
-  });
+  // const { data, isPending, isError } = useQuery({
+  //   queryKey: ["items"],
+  //   queryFn: fetchItems,
+  // });
 
-  if (isPending) return <p>Loading...</p>;
-  if (isError) return <p>Failed to load items.</p>;
+  // if (isPending) return <p>Loading...</p>;
+  // if (isError) return <p>Failed to load items.</p>;
 
   return (
     <main className="wide-contents">
@@ -63,13 +62,13 @@ export default function ItemsPage() {
           </tr>
         </thead>
         <tbody>
-          {data.data.map((item) => (
+          {/* {data.data.map((item) => (
             <tr key={item.id}>
               <td>{item.name}</td>
               <td>{item.type}</td>
               <td>{item.boardGameId}</td>
             </tr>
-          ))}
+          ))} */}
         </tbody>
       </table>
 
