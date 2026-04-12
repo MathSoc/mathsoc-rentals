@@ -45,8 +45,6 @@ export default function ItemsPage() {
   if (isPending) return <p>Loading...</p>;
   if (isError) return <p>Failed to load items.</p>;
 
-  console.log(data);
-
   return (
     <main className="wide-contents">
       <Row className="title-row">
@@ -55,8 +53,6 @@ export default function ItemsPage() {
           Create new
         </Button>
       </Row>
-
-      <p>data:{JSON.stringify(data)}</p>
 
       <table className="items-table">
         <thead>
