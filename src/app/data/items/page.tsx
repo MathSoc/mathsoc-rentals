@@ -3,6 +3,7 @@
 import { Button } from "@/app/components/button/button.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Row } from "@/app/components/layout/layout-components";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CreateItemForm } from "./create-item-form";
 import "./items.scss";
@@ -26,23 +27,23 @@ type ItemsResponse = {
   };
 };
 
-async function fetchItems(): Promise<ItemsResponse> {
-  const res = await fetch("/api/items?page_size=100");
-  if (!res.ok) throw new Error("Failed to fetch items");
-  return res.json();
-}
-
 // @todo use SSR for table data fetching
 export default function ItemsPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // const { data, isPending, isError } = useQuery({
-  //   queryKey: ["items"],
-  //   queryFn: fetchItems,
-  // });
+  const fetchItems = async (): Promise<ItemsResponse> => {
+    const res = await fetch("/api/items?page_size=100");
+    if (!res.ok) throw new Error("Failed to fetch items");
+    return res.json();
+  };
 
-  // if (isPending) return <p>Loading...</p>;
-  // if (isError) return <p>Failed to load items.</p>;
+  const { data, isPending, isError } = useQuery({
+    queryKey: ["items"],
+    queryFn: fetchItems,
+  });
+
+  if (isPending) return <p>Loading...</p>;
+  if (isError) return <p>Failed to load items.</p>;
 
   return (
     <main className="wide-contents">
