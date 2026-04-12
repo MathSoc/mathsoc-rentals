@@ -56,6 +56,8 @@ export default function ItemsPage() {
         </Button>
       </Row>
 
+      <p>data:{JSON.stringify(data)}</p>
+
       <table className="items-table">
         <thead>
           <tr>
