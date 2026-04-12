@@ -15,7 +15,7 @@ export default function AuthDebug() {
   }
 
   return (
-    <main>
+    <main id="login-page">
       <div className="sign-in-container">
         <div className="logo-container">
           <Image

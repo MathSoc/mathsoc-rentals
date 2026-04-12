@@ -1,3 +1,6 @@
+"use client";
+
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import "./navbar.scss";
 
@@ -11,7 +14,24 @@ export function Navigation() {
         <NavigationDropdown title="data">
           <NavigationDropdownItem title="items" href="/data/items" />
         </NavigationDropdown>
+        <NavigationButton title="sign out" onClick={() => signOut()} />
       </div>
+    </div>
+  );
+}
+
+function NavigationButton({
+  title,
+  onClick,
+}: {
+  title: string;
+  onClick: () => void;
+}) {
+  return (
+    <div className="nav-dropdown">
+      <button onClick={onClick} className="nav-dropdown-button">
+        <span>{title}</span>
+      </button>
     </div>
   );
 }
