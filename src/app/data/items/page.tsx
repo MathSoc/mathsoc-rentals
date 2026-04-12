@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CreateItemForm } from "./create-item-form";
 import "./items.scss";
+import { ModifyItemForm } from "./modify-item-form";
 
 type Item = {
   id: string;
@@ -29,7 +30,8 @@ type ItemsResponse = {
 
 // @todo use SSR for table data fetching
 export default function ItemsPage() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
   const fetchItems = async (): Promise<ItemsResponse> => {
     const res = await fetch("/api/items?page_size=100");
@@ -45,11 +47,18 @@ export default function ItemsPage() {
   if (isPending) return <p>Loading...</p>;
   if (isError) return <p>Failed to load items.</p>;
 
+  const handleRowKeyDown = (e: React.KeyboardEvent, item: Item) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setSelectedItem(item);
+    }
+  };
+
   return (
     <main className="wide-contents">
       <Row className="title-row">
         <h1>Items</h1>
-        <Button variant="pink" onClick={() => setDrawerOpen(true)}>
+        <Button variant="pink" onClick={() => setCreateOpen(true)}>
           Create new
         </Button>
       </Row>
@@ -64,7 +73,14 @@ export default function ItemsPage() {
         </thead>
         <tbody>
           {data.data.map((item) => (
-            <tr key={item.id}>
+            <tr
+              key={item.id}
+              className="items-table-row"
+              onClick={() => setSelectedItem(item)}
+              onKeyDown={(e) => handleRowKeyDown(e, item)}
+              tabIndex={0}
+              aria-label={`Edit ${item.name}`}
+            >
               <td>{item.name}</td>
               <td>{item.type}</td>
               <td>{item.boardGameId}</td>
@@ -74,11 +90,28 @@ export default function ItemsPage() {
       </table>
 
       <DrawerPanel
-        open={drawerOpen}
-        onOpenChange={setDrawerOpen}
+        open={createOpen}
+        onOpenChange={setCreateOpen}
         title="Create new item"
       >
-        <CreateItemForm onSuccess={() => setDrawerOpen(false)} />
+        <CreateItemForm onSuccess={() => setCreateOpen(false)} />
+      </DrawerPanel>
+
+      <DrawerPanel
+        open={selectedItem !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedItem(null);
+          }
+        }}
+        title={`Edit "${selectedItem?.name}`}
+      >
+        {selectedItem ? (
+          <ModifyItemForm
+            item={selectedItem}
+            onSuccess={() => setSelectedItem(null)}
+          />
+        ) : null}
       </DrawerPanel>
     </main>
   );

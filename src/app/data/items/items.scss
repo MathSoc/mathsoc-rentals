@@ -7,39 +7,70 @@
   width: 100%;
 }
 
+.items-table-row {
+  cursor: pointer;
+  transition: color var(--transition);
+
+  &:hover,
+  &:focus {
+    color: var(--mathsoc-pink);
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mathsoc-pink-2);
+    outline-offset: -2px;
+  }
+}
+
 .title-row {
   justify-content: space-between;
 }
 
-.create-item-form {
+.drawer-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
 
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 
-  label {
-    font-size: 0.875rem;
-    font-weight: 500;
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    input,
+    select {
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.875rem;
+      background: var(--background);
+      color: inherit;
+    }
   }
 
-  input,
-  select {
-    padding: 8px 10px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
+  .form-error {
     font-size: 0.875rem;
-    background: var(--background);
-    color: inherit;
+    color: var(--destructive);
+    margin: 0;
   }
-}
 
-.form-error {
-  font-size: 0.875rem;
-  color: red;
-  margin: 0;
+  .modify-item-delete {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .buttons {
+    width: 100%;
+
+    button {
+      width: 100%;
+    }
+  }
 }

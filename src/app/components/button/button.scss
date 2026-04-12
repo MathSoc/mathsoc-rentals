@@ -27,6 +27,24 @@ a.button:visited {
     }
   }
 
+  &.destructive {
+    color: var(--destructive);
+    border-color: var(--destructive);
+    &:visited {
+      color: var(--destructive);
+    }
+
+    &:hover,
+    &:focus {
+      background-color: var(--destructive);
+      color: white !important;
+
+      &:visited {
+        color: white !important;
+      }
+    }
+  }
+
   &.white {
     color: white;
     &:visited {

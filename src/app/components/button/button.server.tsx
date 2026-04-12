@@ -9,7 +9,7 @@ export const Button: React.FC<
     prefetch?: boolean;
   }
 > = (props) => {
-  const { children, href, action, disabled, prefetch } = props;
+  const { children, href, action, disabled, prefetch, type } = props;
   const shouldPrefetch = prefetch === false ? false : true;
 
   if (!href && !action) {
@@ -25,7 +25,7 @@ export const Button: React.FC<
   if (action) {
     return (
       <form action={action}>
-        <button disabled={disabled} className={className}>
+        <button disabled={disabled} className={className} type={type}>
           {children}
         </button>
       </form>

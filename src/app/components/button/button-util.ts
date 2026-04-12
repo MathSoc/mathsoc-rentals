@@ -1,8 +1,9 @@
 export type ButtonProps = {
   children: React.ReactNode;
-  variant: "pink" | "white";
+  variant: "pink" | "white" | "destructive";
   size?: "small" | "default";
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 };
 
 export const constructButtonClassName = (props: ButtonProps): string => {
