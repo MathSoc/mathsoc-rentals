@@ -6,7 +6,7 @@ export const workerFetch = async (route: string, options?: RequestInit) => {
   const headers = new Headers(options?.headers);
   headers.set("X-API-KEY", process.env.WORKER_API_KEY!);
 
-  return await fetch(new URL(process.env.WORKER_URL, route), {
+  return await fetch(new URL(route, process.env.WORKER_URL), {
     ...options,
     headers,
   });
