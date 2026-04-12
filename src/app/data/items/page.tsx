@@ -67,13 +67,13 @@ export default function ItemsPage() {
           </tr>
         </thead>
         <tbody>
-          {/* {data.data.map((item) => (
+          {data.data.map((item) => (
             <tr key={item.id}>
               <td>{item.name}</td>
               <td>{item.type}</td>
               <td>{item.boardGameId}</td>
             </tr>
-          ))} */}
+          ))}
         </tbody>
       </table>
 
