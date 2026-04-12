@@ -45,6 +45,8 @@ export default function ItemsPage() {
   if (isPending) return <p>Loading...</p>;
   if (isError) return <p>Failed to load items.</p>;
 
+  console.log(data);
+
   return (
     <main className="wide-contents">
       <Row className="title-row">
@@ -63,13 +65,13 @@ export default function ItemsPage() {
           </tr>
         </thead>
         <tbody>
-          {data.data.map((item) => (
+          {/* {data.data.map((item) => (
             <tr key={item.id}>
               <td>{item.name}</td>
               <td>{item.type}</td>
               <td>{item.boardGameId}</td>
             </tr>
-          ))}
+          ))} */}
         </tbody>
       </table>
 
