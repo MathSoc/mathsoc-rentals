@@ -10,15 +10,15 @@ a.button:visited {
   text-align: center;
 
   &.pink {
-    color: var(--mathsoc-pink);
-    border-color: var(--mathsoc-pink);
+    color: var(--accent-1);
+    border-color: var(--accent-1);
     &:visited {
-      color: var(--mathsoc-pink);
+      color: var(--accent-1);
     }
 
     &:hover,
     &:focus {
-      background-color: var(--mathsoc-pink);
+      background-color: var(--accent-1);
       color: white !important;
 
       &:visited {
@@ -59,10 +59,10 @@ a.button:visited {
   &:hover,
   &:focus {
     background-color: white;
-    color: var(--mathsoc-pink) !important;
+    color: var(--accent-1) !important;
 
     &:visited {
-      color: var(--mathsoc-pink) !important;
+      color: var(--accent-1) !important;
     }
   }
 

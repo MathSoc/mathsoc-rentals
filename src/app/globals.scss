@@ -27,7 +27,7 @@ h1,
 h2,
 h3 {
   @include title-font;
-  color: var(--mathsoc-pink);
+  color: var(--accent-1);
 }
 
 h1 {
@@ -59,7 +59,7 @@ p {
 a,
 a:hover,
 a:visited {
-  color: var(--mathsoc-pink);
+  color: var(--accent-1);
 }
 
 // Reset buttons to not use default appearance
@@ -132,7 +132,7 @@ table {
 
   thead {
     tr {
-      background-color: var(--mathsoc-pink);
+      background-color: var(--accent-1);
       color: white;
     }
   }

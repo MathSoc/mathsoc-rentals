@@ -13,12 +13,12 @@
 
   &:hover,
   &:focus {
-    color: var(--mathsoc-pink);
+    color: var(--accent-1);
     outline: none;
   }
 
   &:focus-visible {
-    outline: 2px solid var(--mathsoc-pink-2);
+    outline: 2px solid var(--accent-1-2);
     outline-offset: -2px;
   }
 }
