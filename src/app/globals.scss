@@ -78,20 +78,40 @@ button {
 
 $input-padding: 8px;
 
+label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
 input,
 select,
 textarea {
-  padding: 8px;
+  padding: 12px;
 
   margin: 0;
   border: 0;
-  background-color: var(--background-hover);
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 0;
   color: var(--text-color);
+  transition: var(--transition);
 
   font-family: var(--primary-font);
+  font-size: 0.875rem;
 
   &::placeholder {
     color: #aaaaaa;
+  }
+
+  &:active {
+    border-radius: 0;
+  }
+
+  &:focus-visible {
+    border-radius: 0;
+    outline: none;
+    border-width: 1px;
+    border-color: var(--accent-1);
   }
 }
 

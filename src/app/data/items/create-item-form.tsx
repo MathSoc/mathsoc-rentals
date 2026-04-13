@@ -1,8 +1,9 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
+import { Column } from "@/app/components/layout/layout-components";
 import { ItemType } from "@/app/util/types";
-import { createItem } from "@/app/util/util";
+import { sendCreateItemRequest } from "@/app/util/util";
 import { Toast } from "@base-ui/react/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -20,8 +21,8 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
   const [type, setType] = useState<ItemType>("calculator");
   const [boardGameId, setBoardGameId] = useState("");
 
-  const mutation = useMutation({
-    mutationFn: createItem,
+  const { mutate: createItem, isPending } = useMutation({
+    mutationFn: sendCreateItemRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["items"] });
       addToast({ title: `${name} successfully created` });
@@ -34,7 +35,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutation.mutate({
+    createItem({
       name,
       type,
       board_game_id: type === "board_game" ? boardGameId || null : null,
@@ -43,45 +44,79 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
 
   return (
     <form className="create-item-form drawer-form" onSubmit={handleSubmit}>
-      <div className="form-field">
-        <label htmlFor="item-name">Name</label>
-        <input
-          id="item-name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
+      <NameField name={name} setName={setName} />
+      <TypeField type={type} setType={setType} />
+      {boardGameId ? (
+        <BGGIdField boardGameId={boardGameId} setBoardGameId={setBoardGameId} />
+      ) : null}
 
-      <div className="form-field">
-        <label htmlFor="item-type">Type</label>
-        <select
-          id="item-type"
-          value={type}
-          onChange={(e) => setType(e.target.value as ItemType)}
-        >
-          <option value="calculator">Calculator</option>
-          <option value="textbook">Textbook</option>
-          <option value="board_game">Board game</option>
-        </select>
-      </div>
-
-      {type === "board_game" && (
-        <div className="form-field">
-          <label htmlFor="item-bgg-id">BGG ID</label>
-          <input
-            id="item-bgg-id"
-            type="text"
-            value={boardGameId}
-            onChange={(e) => setBoardGameId(e.target.value)}
-          />
-        </div>
-      )}
-
-      <Button variant="pink" onClick={() => {}} disabled={mutation.isPending}>
-        {mutation.isPending ? "Creating..." : "Create item"}
+      <Button variant="pink" disabled={isPending}>
+        {isPending ? "Creating..." : "Create item"}
       </Button>
     </form>
   );
 };
+
+function NameField({
+  name,
+  setName,
+}: {
+  name: string;
+  setName: (val: string) => void;
+}) {
+  return (
+    <Column className="form-field">
+      <label htmlFor="item-name">Name</label>
+      <input
+        id="item-name"
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        required
+      />
+    </Column>
+  );
+}
+
+function TypeField({
+  type,
+  setType,
+}: {
+  type: ItemType;
+  setType: (val: ItemType) => void;
+}) {
+  return (
+    <Column className="form-field">
+      <label htmlFor="item-type">Type</label>
+      <select
+        id="item-type"
+        value={type}
+        onChange={(e) => setType(e.target.value as ItemType)}
+      >
+        <option value="calculator">Calculator</option>
+        <option value="textbook">Textbook</option>
+        <option value="board_game">Board game</option>
+      </select>
+    </Column>
+  );
+}
+
+function BGGIdField({
+  boardGameId,
+  setBoardGameId,
+}: {
+  boardGameId: string;
+  setBoardGameId: (newVal: string) => void;
+}) {
+  return (
+    <Column className="form-field">
+      <label htmlFor="item-bgg-id">BGG ID</label>
+      <input
+        id="item-bgg-id"
+        type="text"
+        value={boardGameId}
+        onChange={(e) => setBoardGameId(e.target.value)}
+      />
+    </Column>
+  );
+}

@@ -1,0 +1,10 @@
+.page {
+  padding: 0 40px;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+
+  &.wide {
+    max-width: unset;
+  }
+}

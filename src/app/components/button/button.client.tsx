@@ -3,7 +3,7 @@ import "./button.scss";
 
 export const Button: React.FC<
   ButtonProps & {
-    onClick: () => void;
+    onClick?: () => void;
   }
 > = (props) => {
   const { onClick, children, disabled, type } = props;

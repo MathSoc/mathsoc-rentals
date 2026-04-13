@@ -1,30 +1,27 @@
-.wide-contents {
-  width: 100%;
-  padding: 0 40px;
-}
-
-.items-table {
-  width: 100%;
-}
-
-.items-table-row {
-  cursor: pointer;
-  transition: color var(--transition);
-
-  &:hover,
-  &:focus {
-    color: var(--accent-1);
-    outline: none;
+#items-page {
+  .items-table {
+    width: 100%;
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--accent-1-2);
-    outline-offset: -2px;
-  }
-}
+  .items-table-row {
+    cursor: pointer;
+    transition: color var(--transition);
 
-.title-row {
-  justify-content: space-between;
+    &:hover,
+    &:focus {
+      color: var(--accent-1);
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--accent-1-2);
+      outline-offset: -2px;
+    }
+  }
+
+  .title-row {
+    justify-content: space-between;
+  }
 }
 
 .drawer-form {
@@ -35,41 +32,15 @@
   .form-field {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: 6px;
-
-    label {
-      font-size: 0.875rem;
-      font-weight: 500;
-    }
-
-    input,
-    select {
-      padding: 8px 10px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 0.875rem;
-      background: var(--background);
-      color: inherit;
-    }
-  }
-
-  .form-error {
-    font-size: 0.875rem;
-    color: var(--destructive);
-    margin: 0;
-  }
-
-  .modify-item-delete {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 8px;
   }
 
   .buttons {
-    width: 100%;
+    gap: 8px;
 
     button {
+      margin: 0;
       width: 100%;
     }
   }

@@ -12,7 +12,7 @@ type ModifyItemPayload = {
   board_game_id?: string | null;
 };
 
-export async function createItem(payload: CreateItemPayload) {
+export async function sendCreateItemRequest(payload: CreateItemPayload) {
   const res = await fetch("/api/items", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -22,7 +22,7 @@ export async function createItem(payload: CreateItemPayload) {
   return res.json();
 }
 
-export async function modifyItem(payload: ModifyItemPayload) {
+export async function sendModifyItemRequest(payload: ModifyItemPayload) {
   const res = await fetch("/api/items", {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -32,7 +32,7 @@ export async function modifyItem(payload: ModifyItemPayload) {
   return res.json();
 }
 
-export async function deleteItem(id: string) {
+export async function sendDeleteItemRequest(id: string) {
   const res = await fetch("/api/items", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },

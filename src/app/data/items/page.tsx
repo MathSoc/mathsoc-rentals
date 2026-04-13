@@ -3,6 +3,7 @@
 import { Button } from "@/app/components/button/button.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Row } from "@/app/components/layout/layout-components";
+import { Page } from "@/app/components/page/page-component";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CreateItemForm } from "./create-item-form";
@@ -55,7 +56,7 @@ export default function ItemsPage() {
   };
 
   return (
-    <main className="wide-contents">
+    <Page id="items-page" wide>
       <Row className="title-row">
         <h1>Items</h1>
         <Button variant="pink" onClick={() => setCreateOpen(true)}>
@@ -104,7 +105,7 @@ export default function ItemsPage() {
             setSelectedItem(null);
           }
         }}
-        title={`Edit "${selectedItem?.name}`}
+        title={`Edit ${selectedItem?.name}`}
       >
         {selectedItem ? (
           <ModifyItemForm
@@ -113,6 +114,6 @@ export default function ItemsPage() {
           />
         ) : null}
       </DrawerPanel>
-    </main>
+    </Page>
   );
 }

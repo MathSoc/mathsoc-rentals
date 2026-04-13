@@ -4,7 +4,7 @@ import { Button } from "@/app/components/button/button.client";
 import { Dialog } from "@/app/components/dialog/dialog.client";
 import { Column } from "@/app/components/layout/layout-components";
 import { Item } from "@/app/util/types";
-import { deleteItem, modifyItem } from "@/app/util/util";
+import { sendDeleteItemRequest, sendModifyItemRequest } from "@/app/util/util";
 import { Toast } from "@base-ui/react/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -24,8 +24,8 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
   const [boardGameId, setBoardGameId] = useState(item.boardGameId ?? "");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const modifyMutation = useMutation({
-    mutationFn: modifyItem,
+  const { mutate: modifyItem, isPending: isModificationPending } = useMutation({
+    mutationFn: sendModifyItemRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["items"] });
       addToast({ title: `${name} successfully updated` });
@@ -36,8 +36,8 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
     },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: deleteItem,
+  const { mutate: deleteItem, isPending: isDeletionPending } = useMutation({
+    mutationFn: sendDeleteItemRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["items"] });
       addToast({ title: `${item.name} successfully deleted` });
@@ -50,7 +50,7 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    modifyMutation.mutate({
+    modifyItem({
       id: item.id,
       name,
       board_game_id:
@@ -60,60 +60,87 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
 
   const handleDeleteConfirm = () => {
     setDeleteDialogOpen(false);
-    deleteMutation.mutate(item.id);
+    deleteItem(item.id);
   };
 
-  const isPending = modifyMutation.isPending || deleteMutation.isPending;
+  const isPending = isModificationPending || isDeletionPending;
 
   return (
-    <form className="create-item-form drawer-form" onSubmit={handleSubmit}>
-      <div className="form-field">
-        <label htmlFor="modify-item-name">Name</label>
-        <input
-          id="modify-item-name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-
-      {item.type === "board_game" && (
-        <div className="form-field">
-          <label htmlFor="modify-item-bgg-id">BGG ID</label>
-          <input
-            id="modify-item-bgg-id"
-            type="text"
-            value={boardGameId}
-            onChange={(e) => setBoardGameId(e.target.value)}
+    <div>
+      <form className="modify-item-form drawer-form" onSubmit={handleSubmit}>
+        <NameField name={name} setName={setName} />
+        {boardGameId ? (
+          <BGGIdField
+            boardGameId={boardGameId}
+            setBoardGameId={setBoardGameId}
           />
-        </div>
-      )}
+        ) : null}
 
-      <Column className="buttons">
-        <Button variant="pink" onClick={() => {}} disabled={isPending}>
-          {modifyMutation.isPending ? "Saving..." : "Save changes"}
-        </Button>
+        <Column className="buttons">
+          <Button variant="pink" onClick={() => {}} disabled={isPending}>
+            {isModificationPending ? "Saving..." : "Save changes"}
+          </Button>
 
-        <Button
-          variant="destructive"
-          type="button"
-          onClick={() => setDeleteDialogOpen(true)}
-          disabled={isPending}
-        >
-          {deleteMutation.isPending ? "Deleting..." : "Delete item"}
-        </Button>
-
-        <DeleteDialog
-          item={item}
-          open={deleteDialogOpen}
-          setOpen={setDeleteDialogOpen}
-          onDeleteConfirm={handleDeleteConfirm}
-        />
-      </Column>
-    </form>
+          <Button
+            variant="destructive"
+            type="button"
+            onClick={() => setDeleteDialogOpen(true)}
+            disabled={isPending}
+          >
+            {isDeletionPending ? "Deleting..." : "Delete item"}
+          </Button>
+        </Column>
+      </form>
+      <DeleteDialog
+        item={item}
+        open={deleteDialogOpen}
+        setOpen={setDeleteDialogOpen}
+        onDeleteConfirm={handleDeleteConfirm}
+      />
+    </div>
   );
 };
+
+function NameField({
+  name,
+  setName,
+}: {
+  name: string;
+  setName: (val: string) => void;
+}) {
+  return (
+    <Column className="form-field">
+      <label htmlFor="modify-item-name">Name</label>
+      <input
+        id="modify-item-name"
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        required
+      />
+    </Column>
+  );
+}
+
+function BGGIdField({
+  boardGameId,
+  setBoardGameId,
+}: {
+  boardGameId: string;
+  setBoardGameId: (newVal: string) => void;
+}) {
+  return (
+    <Column className="form-field">
+      <label htmlFor="modify-item-bgg-id">BGG ID</label>
+      <input
+        id="modify-item-bgg-id"
+        type="text"
+        value={boardGameId}
+        onChange={(e) => setBoardGameId(e.target.value)}
+      />
+    </Column>
+  );
+}
 
 function DeleteDialog({
   item,
