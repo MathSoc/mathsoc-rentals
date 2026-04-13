@@ -1,0 +1,28 @@
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-light);
+  padding: 0;
+
+  $size: 28px;
+  width: $size;
+  height: $size;
+  font-size: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+
+  &:hover {
+    background-color: var(--background-hover);
+  }
+
+  &:active {
+    background-color: var(--background-3);
+  }
+}

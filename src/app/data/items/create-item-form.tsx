@@ -3,6 +3,7 @@
 import { Button } from "@/app/components/button/button.client";
 import { ItemType } from "@/app/util/types";
 import { createItem } from "@/app/util/util";
+import { Toast } from "@base-ui/react/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -14,6 +15,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
   onSuccess,
 }) => {
   const queryClient = useQueryClient();
+  const { add: addToast } = Toast.useToastManager();
   const [name, setName] = useState("");
   const [type, setType] = useState<ItemType>("calculator");
   const [boardGameId, setBoardGameId] = useState("");
@@ -22,7 +24,11 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
     mutationFn: createItem,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["items"] });
+      addToast({ title: `${name} successfully created` });
       onSuccess();
+    },
+    onError: () => {
+      addToast({ title: "Something went wrong. Please try again." });
     },
   });
 
@@ -71,10 +77,6 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
             onChange={(e) => setBoardGameId(e.target.value)}
           />
         </div>
-      )}
-
-      {mutation.isError && (
-        <p className="form-error">Something went wrong. Please try again.</p>
       )}
 
       <Button variant="pink" onClick={() => {}} disabled={mutation.isPending}>

@@ -19,16 +19,13 @@
     transform: translate(-50%, -50%);
     background: var(--background);
     border: 1px solid var(--border);
-    border-radius: 8px;
     padding: 24px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
     max-width: 500px;
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
-    transition:
-      opacity 0.2s,
-      transform 0.2s;
+    transition: var(--transition);
 
     &[data-starting-style],
     &[data-ending-style] {
@@ -46,32 +43,5 @@
   .dialog-content {
     margin-bottom: 16px;
     line-height: 1.6;
-  }
-
-  .dialog-close-button {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: var(--text-light);
-    padding: 0;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background-color: var(--background-hover);
-    }
-
-    &:active {
-      background-color: var(--background-3);
-    }
   }
 }

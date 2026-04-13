@@ -5,6 +5,7 @@ import { Dialog } from "@/app/components/dialog/dialog.client";
 import { Column } from "@/app/components/layout/layout-components";
 import { Item } from "@/app/util/types";
 import { deleteItem, modifyItem } from "@/app/util/util";
+import { Toast } from "@base-ui/react/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -18,6 +19,7 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
   onSuccess,
 }) => {
   const queryClient = useQueryClient();
+  const { add: addToast } = Toast.useToastManager();
   const [name, setName] = useState(item.name);
   const [boardGameId, setBoardGameId] = useState(item.boardGameId ?? "");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -26,7 +28,11 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
     mutationFn: modifyItem,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["items"] });
+      addToast({ title: `${name} successfully updated` });
       onSuccess();
+    },
+    onError: () => {
+      addToast({ title: "Something went wrong. Please try again." });
     },
   });
 
@@ -34,7 +40,11 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
     mutationFn: deleteItem,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["items"] });
+      addToast({ title: `${item.name} successfully deleted` });
       onSuccess();
+    },
+    onError: () => {
+      addToast({ title: "Failed to delete item. Please try again." });
     },
   });
 
@@ -78,13 +88,6 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
             onChange={(e) => setBoardGameId(e.target.value)}
           />
         </div>
-      )}
-
-      {modifyMutation.isError && (
-        <p className="form-error">Something went wrong. Please try again.</p>
-      )}
-      {deleteMutation.isError && (
-        <p className="form-error">Failed to delete item. Please try again.</p>
       )}
 
       <Column className="buttons">
