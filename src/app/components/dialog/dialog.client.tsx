@@ -1,5 +1,6 @@
 "use client";
 
+import { CloseButton } from "@/app/components/close-button/close-button";
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import "./dialog.scss";
 
@@ -26,9 +27,7 @@ export const Dialog: React.FC<DialogProps> = ({
               {title}
             </BaseDialog.Title>
             <div className="dialog-content">{children}</div>
-            <BaseDialog.Close className="dialog-close-button">
-              ×
-            </BaseDialog.Close>
+            <BaseDialog.Close render={<CloseButton />} />
           </BaseDialog.Popup>
         </div>
       </BaseDialog.Portal>
