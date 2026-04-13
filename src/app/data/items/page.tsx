@@ -1,5 +1,6 @@
 "use client";
 
+import { GetManyResponse } from "@/app/api/types";
 import { Button } from "@/app/components/button/button.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Row } from "@/app/components/layout/layout-components";
@@ -20,21 +21,12 @@ type Item = {
   deletedAt: string | null;
 };
 
-type ItemsResponse = {
-  data: Item[];
-  meta: {
-    total_count: number;
-    page_index: number;
-    page_size: number;
-  };
-};
-
 // @todo use SSR for table data fetching
 export default function ItemsPage() {
   const [createOpen, setCreateOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
-  const fetchItems = async (): Promise<ItemsResponse> => {
+  const fetchItems = async (): Promise<GetManyResponse<Item>> => {
     const res = await fetch("/api/items?page_size=100");
     if (!res.ok) throw new Error("Failed to fetch items");
     return res.json();

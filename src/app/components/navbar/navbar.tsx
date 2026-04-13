@@ -13,6 +13,7 @@ export function Navigation() {
       <div className="left">
         <NavigationDropdown title="data">
           <NavigationDropdownItem title="items" href="/data/items" />
+          <NavigationDropdownItem title="copies" href="/data/copies" />
         </NavigationDropdown>
         <NavigationButton title="sign out" onClick={() => signOut()} />
       </div>

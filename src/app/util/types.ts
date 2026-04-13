@@ -6,3 +6,21 @@ export type Item = {
   type: ItemType;
   boardGameId: string | null;
 };
+
+export type CopyStatus =
+  | "available"
+  | "rented"
+  | "missing"
+  | "maintenance"
+  | "retired";
+
+export type Copy = {
+  id: string;
+  itemId: string;
+  copyNumber: number;
+  physicalIdentifier: string | null;
+  physicalLocation: string | null;
+  condition: string;
+  status: CopyStatus;
+  ownerClubId: string;
+};
