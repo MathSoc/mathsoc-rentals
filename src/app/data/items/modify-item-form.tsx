@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
+import { Dialog } from "@/app/components/dialog/dialog.client";
 import { Column } from "@/app/components/layout/layout-components";
 import { Item } from "@/app/util/types";
 import { deleteItem, modifyItem } from "@/app/util/util";
@@ -19,7 +20,7 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
   const queryClient = useQueryClient();
   const [name, setName] = useState(item.name);
   const [boardGameId, setBoardGameId] = useState(item.boardGameId ?? "");
-  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const modifyMutation = useMutation({
     mutationFn: modifyItem,
@@ -47,11 +48,8 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
     });
   };
 
-  const handleDelete = () => {
-    if (!confirmDelete) {
-      setConfirmDelete(true);
-      return;
-    }
+  const handleDeleteConfirm = () => {
+    setDeleteDialogOpen(false);
     deleteMutation.mutate(item.id);
   };
 
@@ -97,25 +95,45 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
         <Button
           variant="destructive"
           type="button"
-          onClick={handleDelete}
+          onClick={() => setDeleteDialogOpen(true)}
           disabled={isPending}
         >
-          {deleteMutation.isPending
-            ? "Deleting..."
-            : confirmDelete
-              ? "Are you sure? Click again to confirm"
-              : "Delete item"}
+          {deleteMutation.isPending ? "Deleting..." : "Delete item"}
         </Button>
-        {confirmDelete && !deleteMutation.isPending && (
-          <button
-            type="button"
-            className="delete-cancel"
-            onClick={() => setConfirmDelete(false)}
-          >
-            Cancel
-          </button>
-        )}
+
+        <DeleteDialog
+          item={item}
+          open={deleteDialogOpen}
+          setOpen={setDeleteDialogOpen}
+          onDeleteConfirm={handleDeleteConfirm}
+        />
       </Column>
     </form>
   );
 };
+
+function DeleteDialog({
+  item,
+  open,
+  setOpen,
+  onDeleteConfirm,
+}: {
+  item: Item;
+  open: boolean;
+  setOpen: (isOpen: boolean) => void;
+  onDeleteConfirm: () => void;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={setOpen} title="Delete item">
+      <p>Are you sure you want to delete &quot;{item.name}&quot;?</p>
+      <Column className="buttons">
+        <Button variant="destructive" onClick={onDeleteConfirm}>
+          Confirm
+        </Button>
+        <Button variant="white" onClick={() => setOpen(false)}>
+          Cancel
+        </Button>
+      </Column>
+    </Dialog>
+  );
+}

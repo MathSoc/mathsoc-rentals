@@ -15,3 +15,13 @@ To do most things, you'll want both the frontend and backend running locally.
 1. Either `./run-worker.sh`, or run `npx wrangler dev` within your mathsoc-rentals-worker repository.
 2. Run `npm run dev` locally.
 3. Open the URL `npm run dev` outputs.
+
+# Troubleshooting
+
+### Help! I can't make it past the login page!
+
+Create a `.env` file, and set
+
+```
+DISABLE_AUTH=true
+```
