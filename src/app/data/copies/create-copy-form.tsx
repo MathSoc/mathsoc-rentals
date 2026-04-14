@@ -22,6 +22,15 @@ type ItemsResponse = {
   data: ItemOption[];
 };
 
+type ClubOption = {
+  id: string;
+  name: string;
+};
+
+type ClubsResponse = {
+  data: ClubOption[];
+};
+
 export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
   onSuccess,
 }) => {
@@ -41,6 +50,15 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
     queryFn: async () => {
       const res = await fetch("/api/items?page_size=100");
       if (!res.ok) throw new Error("Failed to fetch items");
+      return res.json();
+    },
+  });
+
+  const { data: clubsData } = useQuery<ClubsResponse>({
+    queryKey: ["clubs"],
+    queryFn: async () => {
+      const res = await fetch("/api/clubs?page_size=100");
+      if (!res.ok) throw new Error("Failed to fetch clubs");
       return res.json();
     },
   });
@@ -150,14 +168,22 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
       </Column>
 
       <Column className="form-field">
-        <label htmlFor="copy-owner-club-id">Owner club ID</label>
-        <input
+        <label htmlFor="copy-owner-club-id">Owner club</label>
+        <select
           id="copy-owner-club-id"
-          type="text"
           value={ownerClubId}
           onChange={(e) => setOwnerClubId(e.target.value)}
           required
-        />
+        >
+          <option value="" disabled>
+            Select a club
+          </option>
+          {clubsData?.data.map((club) => (
+            <option key={club.id} value={club.id}>
+              {club.name}
+            </option>
+          ))}
+        </select>
       </Column>
 
       <Button variant="pink" disabled={isPending}>
