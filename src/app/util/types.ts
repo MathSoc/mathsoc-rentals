@@ -35,3 +35,13 @@ export type Renter = {
   name: string;
   questId: string;
 };
+
+export type BoardGame = {
+  id: string;
+  title: string;
+  minPlayers: number | null;
+  maxPlayers: number | null;
+  playTime: number | null;
+  bggId: string | null;
+  difficulty: string | null;
+};
