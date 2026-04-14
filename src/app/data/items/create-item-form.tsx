@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
+import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
 import { ItemType } from "@/app/util/types";
 import { sendCreateItemRequest } from "@/app/util/util";
@@ -43,7 +44,10 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
   };
 
   return (
-    <form className="create-item-form drawer-form" onSubmit={handleSubmit}>
+    <DrawerForm
+      className="create-item-form drawer-form"
+      onSubmit={handleSubmit}
+    >
       <NameField name={name} setName={setName} />
       <TypeField type={type} setType={setType} />
       {boardGameId ? (
@@ -53,7 +57,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
       <Button variant="pink" disabled={isPending}>
         {isPending ? "Creating..." : "Create item"}
       </Button>
-    </form>
+    </DrawerForm>
   );
 };
 

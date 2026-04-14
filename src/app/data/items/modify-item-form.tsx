@@ -2,6 +2,7 @@
 
 import { Button } from "@/app/components/button/button.client";
 import { Dialog } from "@/app/components/dialog/dialog.client";
+import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
 import { Item } from "@/app/util/types";
 import { sendDeleteItemRequest, sendModifyItemRequest } from "@/app/util/util";
@@ -67,7 +68,7 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
 
   return (
     <div>
-      <form className="modify-item-form drawer-form" onSubmit={handleSubmit}>
+      <DrawerForm className="modify-item-form" onSubmit={handleSubmit}>
         <NameField name={name} setName={setName} />
         {boardGameId ? (
           <BGGIdField
@@ -90,7 +91,7 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
             {isDeletionPending ? "Deleting..." : "Delete item"}
           </Button>
         </Column>
-      </form>
+      </DrawerForm>
       <DeleteDialog
         item={item}
         open={deleteDialogOpen}

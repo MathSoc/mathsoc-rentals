@@ -115,6 +115,11 @@ textarea {
   }
 }
 
+option {
+  font-family: var(--primary-font) !important;
+  font-size: 0.875rem;
+}
+
 section:last-child {
   padding-bottom: 30px;
 }
