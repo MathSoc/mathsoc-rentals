@@ -1,12 +1,14 @@
 type CreateRenterPayload = {
   name: string;
   questId: string;
+  email: string;
 };
 
 type ModifyRenterPayload = {
   id: string;
   name: string;
   questId: string;
+  email: string;
 };
 
 export async function sendCreateRenterRequest(payload: CreateRenterPayload) {

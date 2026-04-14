@@ -19,6 +19,7 @@ export const CreateRenterForm: React.FC<CreateRenterFormProps> = ({
   const { add: addToast } = Toast.useToastManager();
   const [name, setName] = useState("");
   const [questId, setQuestId] = useState("");
+  const [email, setEmail] = useState("");
 
   const { mutate: createRenter, isPending } = useMutation({
     mutationFn: sendCreateRenterRequest,
@@ -34,7 +35,7 @@ export const CreateRenterForm: React.FC<CreateRenterFormProps> = ({
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
-    createRenter({ name, questId });
+    createRenter({ name, questId, email });
   };
 
   return (
@@ -57,6 +58,17 @@ export const CreateRenterForm: React.FC<CreateRenterFormProps> = ({
           type="text"
           value={questId}
           onChange={(e) => setQuestId(e.target.value)}
+          required
+        />
+      </Column>
+
+      <Column className="form-field">
+        <label htmlFor="renter-email">Email</label>
+        <input
+          id="renter-email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
       </Column>

@@ -34,6 +34,7 @@ export type Renter = {
   id: string;
   name: string;
   questId: string;
+  email: string;
 };
 
 export type BoardGame = {
@@ -44,4 +45,15 @@ export type BoardGame = {
   playTime: number | null;
   bggId: string | null;
   difficulty: string | null;
+};
+
+export type Rental = {
+  id: string;
+  copyId: string;
+  renterId: string;
+  rentingClubId: string | null;
+  checkoutDate: string;
+  dueDate: string;
+  dateReturned: string | null;
+  cancelledAt: string | null;
 };
