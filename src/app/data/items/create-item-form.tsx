@@ -129,6 +129,7 @@ function BoardGameSearchField({
     <Column className="form-field">
       <label>Board game</label>
       <SearchSelect
+        name="create-item-form"
         onSearch={handleBoardGameSearch}
         onSelect={onSelect}
         value={boardGameId}

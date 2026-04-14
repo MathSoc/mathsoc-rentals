@@ -4,11 +4,16 @@ import { Button } from "@/app/components/button/button.client";
 import { Dialog } from "@/app/components/dialog/dialog.client";
 import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
-import { Copy, CopyStatus } from "@/app/util/types";
+import {
+  SearchSelect,
+  SearchSelectItem,
+} from "@/app/components/search-select/search-select.client";
+import { Copy, CopyStatus, Item } from "@/app/util/types";
 import {
   sendDeleteCopyRequest,
   sendModifyCopyRequest,
 } from "@/app/util/worker-requests/copies";
+import { searchItems } from "@/app/util/worker-requests/items";
 import { Toast } from "@base-ui/react/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -16,15 +21,6 @@ import { useState } from "react";
 type ModifyCopyFormProps = {
   copy: Copy;
   onSuccess: () => void;
-};
-
-type ItemOption = {
-  id: string;
-  name: string;
-};
-
-type ItemsResponse = {
-  data: ItemOption[];
 };
 
 type ClubOption = {
@@ -36,6 +32,11 @@ type ClubsResponse = {
   data: ClubOption[];
 };
 
+async function handleItemSearch(q: string): Promise<SearchSelectItem[]> {
+  const results = await searchItems(q);
+  return results.map((item) => ({ label: item.name, value: item.id }));
+}
+
 export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
   copy,
   onSuccess,
@@ -43,7 +44,7 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
   const queryClient = useQueryClient();
   const { add: addToast } = Toast.useToastManager();
 
-  const [itemId, setItemId] = useState(copy.itemId);
+  const [itemId, setItemId] = useState<string>(copy.itemId);
   const [copyNumber, setCopyNumber] = useState(copy.copyNumber);
   const [condition, setCondition] = useState(copy.condition);
   const [status, setStatus] = useState<CopyStatus>(copy.status);
@@ -56,7 +57,7 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
   const [ownerClubId, setOwnerClubId] = useState(copy.ownerClubId);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const { data: itemsData } = useQuery<ItemsResponse>({
+  const { data: itemsData } = useQuery<{ data: Item[] }>({
     queryKey: ["items"],
     queryFn: async () => {
       const res = await fetch("/api/items?page_size=100");
@@ -64,6 +65,10 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
       return res.json();
     },
   });
+
+  const initialItemName = itemsData?.data.find(
+    (i) => i.id === copy.itemId,
+  )?.name;
 
   const { data: clubsData } = useQuery<ClubsResponse>({
     queryKey: ["clubs"],
@@ -123,19 +128,16 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
     <div>
       <DrawerForm className="modify-copy-form" onSubmit={handleSubmit}>
         <Column className="form-field">
-          <label htmlFor="modify-copy-item-id">Item</label>
-          <select
-            id="modify-copy-item-id"
+          <label>Item</label>
+          <SearchSelect
+            name="modify-copy-form"
+            key={initialItemName}
+            onSearch={handleItemSearch}
+            onSelect={(item) => setItemId(item?.value ?? copy.itemId)}
             value={itemId}
-            onChange={(e) => setItemId(e.target.value)}
-            required
-          >
-            {itemsData?.data.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
+            displayValue={initialItemName}
+            placeholder="Search by name..."
+          />
         </Column>
 
         <Column className="form-field">
