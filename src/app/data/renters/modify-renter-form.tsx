@@ -26,6 +26,7 @@ export const ModifyRenterForm: React.FC<ModifyRenterFormProps> = ({
   const { add: addToast } = Toast.useToastManager();
   const [name, setName] = useState(renter.name);
   const [questId, setQuestId] = useState(renter.questId);
+  const [email, setEmail] = useState(renter.email);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const { mutate: modifyRenter, isPending: isModificationPending } =
@@ -55,7 +56,7 @@ export const ModifyRenterForm: React.FC<ModifyRenterFormProps> = ({
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
-    modifyRenter({ id: renter.id, name, questId });
+    modifyRenter({ id: renter.id, name, questId, email });
   };
 
   const handleDeleteConfirm = () => {
@@ -86,6 +87,17 @@ export const ModifyRenterForm: React.FC<ModifyRenterFormProps> = ({
             type="text"
             value={questId}
             onChange={(e) => setQuestId(e.target.value)}
+            required
+          />
+        </Column>
+
+        <Column className="form-field">
+          <label htmlFor="modify-renter-email">Email</label>
+          <input
+            id="modify-renter-email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </Column>
