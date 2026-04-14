@@ -24,3 +24,8 @@ export type Copy = {
   status: CopyStatus;
   ownerClubId: string;
 };
+
+export type Club = {
+  id: string;
+  name: string;
+};

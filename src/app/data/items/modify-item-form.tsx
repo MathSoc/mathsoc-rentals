@@ -5,7 +5,10 @@ import { Dialog } from "@/app/components/dialog/dialog.client";
 import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
 import { Item } from "@/app/util/types";
-import { sendDeleteItemRequest, sendModifyItemRequest } from "@/app/util/util";
+import {
+  sendDeleteItemRequest,
+  sendModifyItemRequest,
+} from "@/app/util/worker-requests/items";
 import { Toast } from "@base-ui/react/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
