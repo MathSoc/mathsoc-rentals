@@ -29,3 +29,9 @@ export type Club = {
   id: string;
   name: string;
 };
+
+export type Renter = {
+  id: string;
+  name: string;
+  questId: string;
+};
