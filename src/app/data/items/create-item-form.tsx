@@ -3,7 +3,12 @@
 import { Button } from "@/app/components/button/button.client";
 import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
+import {
+  SearchSelect,
+  SearchSelectItem,
+} from "@/app/components/search-select/search-select.client";
 import { ItemType } from "@/app/util/types";
+import { searchBoardGames } from "@/app/util/worker-requests/board-games";
 import { sendCreateItemRequest } from "@/app/util/worker-requests/items";
 import { Toast } from "@base-ui/react/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -20,7 +25,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
   const { add: addToast } = Toast.useToastManager();
   const [name, setName] = useState("");
   const [type, setType] = useState<ItemType>("calculator");
-  const [boardGameId, setBoardGameId] = useState("");
+  const [boardGameId, setBoardGameId] = useState<string | null>(null);
 
   const { mutate: createItem, isPending } = useMutation({
     mutationFn: sendCreateItemRequest,
@@ -39,7 +44,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
     createItem({
       name,
       type,
-      board_game_id: type === "board_game" ? boardGameId || null : null,
+      board_game_id: type === "board_game" ? boardGameId : null,
     });
   };
 
@@ -50,8 +55,11 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
     >
       <NameField name={name} setName={setName} />
       <TypeField type={type} setType={setType} />
-      {boardGameId ? (
-        <BGGIdField boardGameId={boardGameId} setBoardGameId={setBoardGameId} />
+      {type === "board_game" ? (
+        <BoardGameSearchField
+          boardGameId={boardGameId}
+          onSelect={(item) => setBoardGameId(item?.value ?? null)}
+        />
       ) : null}
 
       <Button variant="pink" disabled={isPending}>
@@ -105,21 +113,26 @@ function TypeField({
   );
 }
 
-function BGGIdField({
+async function handleBoardGameSearch(q: string): Promise<SearchSelectItem[]> {
+  const results = await searchBoardGames(q);
+  return results.map((bg) => ({ label: bg.title, value: bg.id }));
+}
+
+function BoardGameSearchField({
   boardGameId,
-  setBoardGameId,
+  onSelect,
 }: {
-  boardGameId: string;
-  setBoardGameId: (newVal: string) => void;
+  boardGameId: string | null;
+  onSelect: (item: SearchSelectItem | null) => void;
 }) {
   return (
     <Column className="form-field">
-      <label htmlFor="item-bgg-id">BGG ID</label>
-      <input
-        id="item-bgg-id"
-        type="text"
+      <label>Board game</label>
+      <SearchSelect
+        onSearch={handleBoardGameSearch}
+        onSelect={onSelect}
         value={boardGameId}
-        onChange={(e) => setBoardGameId(e.target.value)}
+        placeholder="Search by title..."
       />
     </Column>
   );

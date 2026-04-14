@@ -4,13 +4,18 @@ import { Button } from "@/app/components/button/button.client";
 import { Dialog } from "@/app/components/dialog/dialog.client";
 import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
-import { Item } from "@/app/util/types";
+import {
+  SearchSelect,
+  SearchSelectItem,
+} from "@/app/components/search-select/search-select.client";
+import { BoardGame, Item } from "@/app/util/types";
+import { searchBoardGames } from "@/app/util/worker-requests/board-games";
 import {
   sendDeleteItemRequest,
   sendModifyItemRequest,
 } from "@/app/util/worker-requests/items";
 import { Toast } from "@base-ui/react/toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 type ModifyItemFormProps = {
@@ -25,7 +30,22 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
   const queryClient = useQueryClient();
   const { add: addToast } = Toast.useToastManager();
   const [name, setName] = useState(item.name);
-  const [boardGameId, setBoardGameId] = useState(item.boardGameId ?? "");
+  const [boardGameId, setBoardGameId] = useState<string | null>(
+    item.boardGameId,
+  );
+
+  const { data: initialBoardGame } = useQuery<BoardGame | null>({
+    queryKey: ["board-games", item.boardGameId],
+    queryFn: async () => {
+      const res = await fetch(`/api/board-games?page_size=100`);
+      const json = await res.json();
+      return (
+        (json.data as BoardGame[]).find((bg) => bg.id === item.boardGameId) ??
+        null
+      );
+    },
+    enabled: !!item.boardGameId,
+  });
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const { mutate: modifyItem, isPending: isModificationPending } = useMutation({
@@ -58,7 +78,7 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
       id: item.id,
       name,
       board_game_id:
-        item.type === "board_game" ? boardGameId || null : undefined,
+        item.type === "board_game" ? boardGameId : undefined,
     });
   };
 
@@ -73,10 +93,11 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
     <div>
       <DrawerForm className="modify-item-form" onSubmit={handleSubmit}>
         <NameField name={name} setName={setName} />
-        {boardGameId ? (
-          <BGGIdField
+        {item.type === "board_game" ? (
+          <BoardGameSearchField
             boardGameId={boardGameId}
-            setBoardGameId={setBoardGameId}
+            displayValue={initialBoardGame?.title}
+            onSelect={(selected) => setBoardGameId(selected?.value ?? null)}
           />
         ) : null}
 
@@ -126,21 +147,29 @@ function NameField({
   );
 }
 
-function BGGIdField({
+async function handleBoardGameSearch(q: string): Promise<SearchSelectItem[]> {
+  const results = await searchBoardGames(q);
+  return results.map((bg) => ({ label: bg.title, value: bg.id }));
+}
+
+function BoardGameSearchField({
   boardGameId,
-  setBoardGameId,
+  displayValue,
+  onSelect,
 }: {
-  boardGameId: string;
-  setBoardGameId: (newVal: string) => void;
+  boardGameId: string | null;
+  displayValue?: string;
+  onSelect: (item: SearchSelectItem | null) => void;
 }) {
   return (
     <Column className="form-field">
-      <label htmlFor="modify-item-bgg-id">BGG ID</label>
-      <input
-        id="modify-item-bgg-id"
-        type="text"
+      <label>Board game</label>
+      <SearchSelect
+        onSearch={handleBoardGameSearch}
+        onSelect={onSelect}
         value={boardGameId}
-        onChange={(e) => setBoardGameId(e.target.value)}
+        displayValue={displayValue}
+        placeholder="Search by title..."
       />
     </Column>
   );
