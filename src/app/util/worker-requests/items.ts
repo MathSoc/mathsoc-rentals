@@ -1,4 +1,12 @@
-import { ItemType } from "../types";
+import { Item, ItemType } from "../types";
+
+export async function searchItems(q: string): Promise<Item[]> {
+  const params = new URLSearchParams({ q, page_size: "20" });
+  const res = await fetch(`/api/items?${params}`);
+  if (!res.ok) throw new Error("Failed to search items");
+  const json = await res.json();
+  return json.data as Item[];
+}
 
 type CreateItemPayload = {
   name: string;

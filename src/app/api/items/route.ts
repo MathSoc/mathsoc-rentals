@@ -7,8 +7,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   const pageIndex = searchParams.get("page_index");
   const pageSize = searchParams.get("page_size");
+  const q = searchParams.get("q");
   if (pageIndex !== null) params.set("page_index", pageIndex);
   if (pageSize !== null) params.set("page_size", pageSize);
+  if (q !== null) params.set("q", q);
 
   const query = params.size > 0 ? `?${params.toString()}` : "";
   const res = await workerFetch(`/api/items${query}`);

@@ -1,7 +1,8 @@
 "use client";
 
 import { Combobox } from "@base-ui/react/combobox";
-import { useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 import "./search-select.scss";
 
 export type SearchSelectItem = {
@@ -9,43 +10,47 @@ export type SearchSelectItem = {
   value: string;
 };
 
-type SearchSelectProps = {
-  onSearch: (query: string) => Promise<SearchSelectItem[]>;
-  onSelect: (item: SearchSelectItem | null) => void;
-  placeholder?: string;
-  value?: string | null;
-  displayValue?: string | null;
-};
-
-export const SearchSelect: React.FC<SearchSelectProps> = ({
+export function SearchSelect({
+  name,
   onSearch,
   onSelect,
   placeholder,
   value,
   displayValue,
-}) => {
-  const [items, setItems] = useState<SearchSelectItem[]>([]);
+}: {
+  name: string;
+  onSearch: (query: string) => Promise<SearchSelectItem[]>;
+  onSelect: (item: SearchSelectItem | null) => void;
+  placeholder?: string;
+  value?: string | null;
+  displayValue?: string | null;
+}) {
   const [inputValue, setInputValue] = useState(displayValue ?? "");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setDebouncedQuery(inputValue.trim());
+    }, 300);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [inputValue]);
+
+  const { data: items = [] } = useQuery({
+    queryKey: ["search-select", name, debouncedQuery],
+    queryFn: () => onSearch(debouncedQuery),
+    enabled: debouncedQuery.length > 0,
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setInputValue(query);
-
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
     if (!query.trim()) {
-      setItems([]);
       onSelect(null);
-      return;
     }
-
-    debounceRef.current = setTimeout(async () => {
-      const results = await onSearch(query);
-      setItems(results);
-    }, 300);
   };
 
   const handleValueChange = (newValue: string | null) => {
@@ -93,4 +98,4 @@ export const SearchSelect: React.FC<SearchSelectProps> = ({
       </Combobox.Root>
     </div>
   );
-};
+}

@@ -3,23 +3,19 @@
 import { Button } from "@/app/components/button/button.client";
 import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
+import {
+  SearchSelect,
+  SearchSelectItem,
+} from "@/app/components/search-select/search-select.client";
 import { CopyStatus } from "@/app/util/types";
 import { sendCreateCopyRequest } from "@/app/util/worker-requests/copies";
+import { searchItems } from "@/app/util/worker-requests/items";
 import { Toast } from "@base-ui/react/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 type CreateCopyFormProps = {
   onSuccess: () => void;
-};
-
-type ItemOption = {
-  id: string;
-  name: string;
-};
-
-type ItemsResponse = {
-  data: ItemOption[];
 };
 
 type ClubOption = {
@@ -31,28 +27,24 @@ type ClubsResponse = {
   data: ClubOption[];
 };
 
+async function handleItemSearch(q: string): Promise<SearchSelectItem[]> {
+  const results = await searchItems(q);
+  return results.map((item) => ({ label: item.name, value: item.id }));
+}
+
 export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
   onSuccess,
 }) => {
   const queryClient = useQueryClient();
   const { add: addToast } = Toast.useToastManager();
 
-  const [itemId, setItemId] = useState("");
+  const [itemId, setItemId] = useState<string | null>(null);
   const [copyNumber, setCopyNumber] = useState(1);
   const [condition, setCondition] = useState("");
   const [status, setStatus] = useState<CopyStatus>("available");
   const [physicalIdentifier, setPhysicalIdentifier] = useState("");
   const [physicalLocation, setPhysicalLocation] = useState("");
   const [ownerClubId, setOwnerClubId] = useState("");
-
-  const { data: itemsData } = useQuery<ItemsResponse>({
-    queryKey: ["items"],
-    queryFn: async () => {
-      const res = await fetch("/api/items?page_size=100");
-      if (!res.ok) throw new Error("Failed to fetch items");
-      return res.json();
-    },
-  });
 
   const { data: clubsData } = useQuery<ClubsResponse>({
     queryKey: ["clubs"],
@@ -77,6 +69,12 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!itemId) {
+      addToast({ title: "No item selected" });
+      return;
+    }
+
     createCopy({
       item_id: itemId,
       copy_number: copyNumber,
@@ -91,22 +89,14 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
   return (
     <DrawerForm className="create-copy-form" onSubmit={handleSubmit}>
       <Column className="form-field">
-        <label htmlFor="copy-item-id">Item</label>
-        <select
-          id="copy-item-id"
+        <label>Item</label>
+        <SearchSelect
+          name="create-copy-form"
+          onSearch={handleItemSearch}
+          onSelect={(item) => setItemId(item?.value ?? null)}
           value={itemId}
-          onChange={(e) => setItemId(e.target.value)}
-          required
-        >
-          <option value="" disabled>
-            Select an item
-          </option>
-          {itemsData?.data.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
+          placeholder="Search by name..."
+        />
       </Column>
 
       <Column className="form-field">

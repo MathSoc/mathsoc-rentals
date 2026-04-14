@@ -77,8 +77,7 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
     modifyItem({
       id: item.id,
       name,
-      board_game_id:
-        item.type === "board_game" ? boardGameId : undefined,
+      board_game_id: item.type === "board_game" ? boardGameId : undefined,
     });
   };
 
@@ -165,6 +164,7 @@ function BoardGameSearchField({
     <Column className="form-field">
       <label>Board game</label>
       <SearchSelect
+        name="modify-item-form"
         onSearch={handleBoardGameSearch}
         onSelect={onSelect}
         value={boardGameId}
