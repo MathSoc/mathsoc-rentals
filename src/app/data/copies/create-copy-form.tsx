@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
+import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
 import { CopyStatus } from "@/app/util/types";
 import { sendCreateCopyRequest } from "@/app/util/util";
@@ -70,7 +71,7 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
   };
 
   return (
-    <form className="create-copy-form drawer-form" onSubmit={handleSubmit}>
+    <DrawerForm className="create-copy-form" onSubmit={handleSubmit}>
       <Column className="form-field">
         <label htmlFor="copy-item-id">Item</label>
         <select
@@ -162,6 +163,6 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
       <Button variant="pink" disabled={isPending}>
         {isPending ? "Creating..." : "Create copy"}
       </Button>
-    </form>
+    </DrawerForm>
   );
 };

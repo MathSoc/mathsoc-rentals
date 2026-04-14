@@ -2,6 +2,7 @@
 
 import { Button } from "@/app/components/button/button.client";
 import { Dialog } from "@/app/components/dialog/dialog.client";
+import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
 import { Copy, CopyStatus } from "@/app/util/types";
 import { sendDeleteCopyRequest, sendModifyCopyRequest } from "@/app/util/util";
@@ -99,7 +100,7 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
 
   return (
     <div>
-      <form className="modify-copy-form drawer-form" onSubmit={handleSubmit}>
+      <DrawerForm className="modify-copy-form" onSubmit={handleSubmit}>
         <Column className="form-field">
           <label htmlFor="modify-copy-item-id">Item</label>
           <select
@@ -203,7 +204,7 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
             {isDeletionPending ? "Deleting..." : "Delete copy"}
           </Button>
         </Column>
-      </form>
+      </DrawerForm>
 
       <DeleteDialog
         copy={copy}

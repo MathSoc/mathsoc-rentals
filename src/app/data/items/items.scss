@@ -23,25 +23,3 @@
     justify-content: space-between;
   }
 }
-
-.drawer-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-
-  .form-field {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-  }
-
-  .buttons {
-    gap: 8px;
-
-    button {
-      margin: 0;
-      width: 100%;
-    }
-  }
-}
