@@ -14,6 +14,7 @@ export function Navigation() {
         <NavigationDropdown title="data">
           <NavigationDropdownItem title="items" href="/data/items" />
           <NavigationDropdownItem title="copies" href="/data/copies" />
+          <NavigationDropdownItem title="clubs" href="/data/clubs" />
         </NavigationDropdown>
         <NavigationButton title="sign out" onClick={() => signOut()} />
       </div>

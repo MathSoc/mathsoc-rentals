@@ -4,7 +4,7 @@ import { Button } from "@/app/components/button/button.client";
 import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
 import { ItemType } from "@/app/util/types";
-import { sendCreateItemRequest } from "@/app/util/util";
+import { sendCreateItemRequest } from "@/app/util/worker-requests/items";
 import { Toast } from "@base-ui/react/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
