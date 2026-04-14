@@ -2,12 +2,11 @@
 
 import { GetManyResponse } from "@/app/api/types";
 import { Button } from "@/app/components/button/button.client";
+import { DataTable } from "@/app/components/data-table/data-table.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
-import { Row } from "@/app/components/layout/layout-components";
 import { Page } from "@/app/components/page/page-component";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import "./copies.scss";
 import { CreateCopyForm } from "./create-copy-form";
 import { ModifyCopyForm } from "./modify-copy-form";
 
@@ -44,51 +43,27 @@ export default function CopiesPage() {
   if (isPending) return <p>Loading...</p>;
   if (isError) return <p>Failed to load copies.</p>;
 
-  const handleRowKeyDown = (e: React.KeyboardEvent, copy: Copy) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      setSelectedCopy(copy);
-    }
-  };
-
   return (
     <Page id="copies-page" wide>
-      <Row className="title-row">
-        <h1>Copies</h1>
-        <Button variant="pink" onClick={() => setCreateOpen(true)}>
-          Create new
-        </Button>
-      </Row>
-
-      <table className="copies-table">
-        <thead>
-          <tr>
-            <th>Item ID</th>
-            <th>Copy #</th>
-            <th>Status</th>
-            <th>Condition</th>
-            <th>Location</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.data.map((copy) => (
-            <tr
-              key={copy.id}
-              className="copies-table-row"
-              onClick={() => setSelectedCopy(copy)}
-              onKeyDown={(e) => handleRowKeyDown(e, copy)}
-              tabIndex={0}
-              aria-label={`Edit Copy #${copy.copyNumber}`}
-            >
-              <td>{copy.itemId}</td>
-              <td>{copy.copyNumber}</td>
-              <td>{copy.status}</td>
-              <td>{copy.condition}</td>
-              <td>{copy.physicalLocation}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <DataTable
+        rows={data.data}
+        columns={[
+          { header: "Item ID", cell: (copy) => copy.itemId },
+          { header: "Copy #", cell: (copy) => copy.copyNumber },
+          { header: "Status", cell: (copy) => copy.status },
+          { header: "Condition", cell: (copy) => copy.condition },
+          { header: "Location", cell: (copy) => copy.physicalLocation },
+        ]}
+        onRowClick={setSelectedCopy}
+        title="Copies"
+        cta={
+          <Button variant="pink" onClick={() => setCreateOpen(true)}>
+            Create new
+          </Button>
+        }
+        getRowKey={(copy) => copy.id}
+        getRowAriaLabel={(copy) => `Edit Copy #${copy.copyNumber}`}
+      />
 
       <DrawerPanel
         open={createOpen}

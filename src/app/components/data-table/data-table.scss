@@ -1,9 +1,13 @@
-#items-page {
-  .items-table {
+.data-table-container {
+  .data-table-title-row {
+    justify-content: space-between;
+  }
+
+  .data-table {
     width: 100%;
   }
 
-  .items-table-row {
+  .data-table-row {
     cursor: pointer;
     transition: color var(--transition);
 
@@ -14,12 +18,8 @@
     }
 
     &:focus-visible {
-      outline: 2px solid var(--accent-1-2);
+      outline: 2px solid var(--accent-1);
       outline-offset: -2px;
     }
-  }
-
-  .title-row {
-    justify-content: space-between;
   }
 }

@@ -2,13 +2,12 @@
 
 import { GetManyResponse } from "@/app/api/types";
 import { Button } from "@/app/components/button/button.client";
+import { DataTable } from "@/app/components/data-table/data-table.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
-import { Row } from "@/app/components/layout/layout-components";
 import { Page } from "@/app/components/page/page-component";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CreateItemForm } from "./create-item-form";
-import "./items.scss";
 import { ModifyItemForm } from "./modify-item-form";
 
 type Item = {
@@ -40,47 +39,25 @@ export default function ItemsPage() {
   if (isPending) return <p>Loading...</p>;
   if (isError) return <p>Failed to load items.</p>;
 
-  const handleRowKeyDown = (e: React.KeyboardEvent, item: Item) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      setSelectedItem(item);
-    }
-  };
-
   return (
     <Page id="items-page" wide>
-      <Row className="title-row">
-        <h1>Items</h1>
-        <Button variant="pink" onClick={() => setCreateOpen(true)}>
-          Create new
-        </Button>
-      </Row>
-
-      <table className="items-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>BGG ID</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.data.map((item) => (
-            <tr
-              key={item.id}
-              className="items-table-row"
-              onClick={() => setSelectedItem(item)}
-              onKeyDown={(e) => handleRowKeyDown(e, item)}
-              tabIndex={0}
-              aria-label={`Edit ${item.name}`}
-            >
-              <td>{item.name}</td>
-              <td>{item.type}</td>
-              <td>{item.boardGameId}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <DataTable
+        rows={data.data}
+        columns={[
+          { header: "Name", cell: (item) => item.name },
+          { header: "Type", cell: (item) => item.type },
+          { header: "BGG ID", cell: (item) => item.boardGameId },
+        ]}
+        onRowClick={setSelectedItem}
+        title="Items"
+        cta={
+          <Button variant="pink" onClick={() => setCreateOpen(true)}>
+            Create new
+          </Button>
+        }
+        getRowKey={(item) => item.id}
+        getRowAriaLabel={(item) => `Edit ${item.name}`}
+      />
 
       <DrawerPanel
         open={createOpen}
