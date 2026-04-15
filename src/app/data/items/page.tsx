@@ -5,6 +5,7 @@ import { Button } from "@/app/components/button/button.client";
 import { DataTable } from "@/app/components/data-table/data-table.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Page } from "@/app/components/page/page-component";
+import { BoardGame } from "@/app/util/types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CreateItemForm } from "./create-item-form";
@@ -25,8 +26,10 @@ export default function ItemsPage() {
   const [createOpen, setCreateOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
-  const fetchItems = async (): Promise<GetManyResponse<Item>> => {
-    const res = await fetch("/api/items?page_size=100");
+  const fetchItems = async (): Promise<
+    GetManyResponse<Item & { boardGame?: BoardGame }>
+  > => {
+    const res = await fetch(`/api/items?page_size=100&expand=["board_game"]`);
     if (!res.ok) throw new Error("Failed to fetch items");
     return res.json();
   };
@@ -46,7 +49,7 @@ export default function ItemsPage() {
         columns={[
           { header: "Name", cell: (item) => item.name },
           { header: "Type", cell: (item) => item.type },
-          { header: "BGG ID", cell: (item) => item.boardGameId },
+          { header: "Board game", cell: (item) => item.boardGame?.title },
         ]}
         onRowClick={setSelectedItem}
         title="Items"
