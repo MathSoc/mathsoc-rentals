@@ -51,7 +51,7 @@ export default function ItemsPage() {
         onRowClick={setSelectedItem}
         title="Items"
         cta={
-          <Button variant="pink" onClick={() => setCreateOpen(true)}>
+          <Button variant="white" onClick={() => setCreateOpen(true)}>
             Create new
           </Button>
         }

@@ -12,6 +12,6 @@
 
 @mixin title-font() {
   font-family: var(--title-font);
-  text-transform: uppercase;
-  font-weight: 300;
+  // text-transform: uppercase;
+  font-weight: 700;
 }

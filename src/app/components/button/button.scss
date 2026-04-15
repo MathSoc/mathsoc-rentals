@@ -2,7 +2,10 @@
 a.button,
 a.button:visited {
   padding: 16px 60px;
-  border: 1px solid white;
+  background-color: var(--background);
+  font-weight: 700;
+  font-size: 0.75rem;
+  border-radius: 4px;
   text-decoration: none !important;
   transition: 0.15s linear;
   margin: 8px 0;
@@ -10,6 +13,16 @@ a.button:visited {
   height: min-content;
   display: block;
   text-align: center;
+
+  &:hover,
+  &:focus {
+    background-color: white;
+    color: var(--accent-1) !important;
+
+    &:visited {
+      color: var(--accent-1) !important;
+    }
+  }
 
   &.pink {
     color: var(--accent-1);
@@ -48,24 +61,23 @@ a.button:visited {
   }
 
   &.white {
-    color: white;
+    background-color: var(--background);
+
     &:visited {
-      color: white;
+      background-color: var(--background);
+    }
+  }
+
+  &.alt {
+    background-color: var(--background-2);
+
+    &:visited {
+      background-color: var(--background-2);
     }
   }
 
   &.small {
     padding: 4px;
-  }
-
-  &:hover,
-  &:focus {
-    background-color: white;
-    color: var(--accent-1) !important;
-
-    &:visited {
-      color: var(--accent-1) !important;
-    }
   }
 
   &:disabled {
@@ -75,7 +87,7 @@ a.button:visited {
 
     &:hover {
       color: var(--mathsoc-grey-2) !important;
-      background-color: var(--background-color);
+      background-color: var(--background);
     }
   }
 }

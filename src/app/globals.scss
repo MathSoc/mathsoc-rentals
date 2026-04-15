@@ -2,7 +2,7 @@
 @use "sass-mixins" as *;
 
 body {
-  background-color: var(--background);
+  background-color: var(--background-2);
   font-family: var(--primary-font);
   color: var(--text-color);
   margin: 0;
@@ -91,7 +91,7 @@ textarea {
   margin: 0;
   border: 0;
   background-color: var(--background);
-  border: 1px solid var(--border);
+  border: var(--border);
   border-radius: 0;
   color: var(--text-color);
   transition: var(--transition);

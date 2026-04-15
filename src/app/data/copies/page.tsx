@@ -57,7 +57,7 @@ export default function CopiesPage() {
         onRowClick={setSelectedCopy}
         title="Copies"
         cta={
-          <Button variant="pink" onClick={() => setCreateOpen(true)}>
+          <Button variant="white" onClick={() => setCreateOpen(true)}>
             Create new
           </Button>
         }

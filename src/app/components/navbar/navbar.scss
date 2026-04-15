@@ -2,7 +2,8 @@
   height: 64px;
   padding: 0 16px;
   width: 100%;
-  border-bottom: 1px solid var(--border);
+  border-bottom: var(--border);
+  background-color: var(--background);
   display: flex;
   justify-content: space-between;
 
@@ -35,8 +36,8 @@
     height: 100%;
     display: flex;
     align-items: center;
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
+    border-left: var(--border);
+    border-right: var(--border);
   }
 
   .nav-dropdown-children {
@@ -48,7 +49,7 @@
   .nav-dropdown-item {
     width: 100%;
     background-color: var(--background);
-    border: 1px solid var(--border);
+    border: var(--border);
     text-align: center;
 
     a {

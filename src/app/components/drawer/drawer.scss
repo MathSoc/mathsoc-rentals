@@ -17,8 +17,8 @@
   right: 0;
   bottom: 0;
   width: 400px;
-  background: var(--background);
-  border-left: 1px solid var(--border);
+  background: var(--background-2);
+  border-left: var(--border);
   padding: 24px;
   box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
   transform: translateX(var(--drawer-swipe-movement-x, 0));
