@@ -5,6 +5,7 @@ import { Button } from "@/app/components/button/button.client";
 import { DataTable } from "@/app/components/data-table/data-table.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Page } from "@/app/components/page/page-component";
+import { Item } from "@/app/util/types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CreateCopyForm } from "./create-copy-form";
@@ -29,8 +30,10 @@ export default function CopiesPage() {
   const [createOpen, setCreateOpen] = useState(false);
   const [selectedCopy, setSelectedCopy] = useState<Copy | null>(null);
 
-  const fetchCopies = async (): Promise<GetManyResponse<Copy>> => {
-    const res = await fetch("/api/copies?page_size=100");
+  const fetchCopies = async (): Promise<
+    GetManyResponse<Copy & { item: Item | null }>
+  > => {
+    const res = await fetch(`/api/copies?page_size=100&expand=["items"]`);
     if (!res.ok) throw new Error("Failed to fetch copies");
     return res.json();
   };
@@ -48,7 +51,7 @@ export default function CopiesPage() {
       <DataTable
         rows={data.data}
         columns={[
-          { header: "Item ID", cell: (copy) => copy.itemId },
+          { header: "Item", cell: (copy) => copy.item?.name },
           { header: "Copy #", cell: (copy) => copy.copyNumber },
           { header: "Status", cell: (copy) => copy.status },
           { header: "Condition", cell: (copy) => copy.condition },

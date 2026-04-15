@@ -29,7 +29,7 @@ export default function ItemsPage() {
   const fetchItems = async (): Promise<
     GetManyResponse<Item & { boardGame?: BoardGame }>
   > => {
-    const res = await fetch(`/api/items?page_size=100&expand=["board_game"]`);
+    const res = await fetch(`/api/items?page_size=100&expand=["board_games"]`);
     if (!res.ok) throw new Error("Failed to fetch items");
     return res.json();
   };
