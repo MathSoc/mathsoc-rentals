@@ -1,10 +1,10 @@
 // Colours
 :root {
-  --background: #111;
-  --background-2: #333;
-  --background-3: #444;
+  --background: #fff;
+  --background-2: #f4f4f4;
+  --background-3: #a1a1a1;
   --background-hover: var(--background-2);
-  --border: #fff;
+  --border-color: #cfcfcf;
 
   --pink: #ff2588;
   --mathsoc-pink: #c60078;
@@ -12,13 +12,18 @@
   --mathsoc-pink-3: #df2498;
   --mathsoc-pink-4: #ffbeef;
 
-  --destructive: #ff0000;
+  --destructive: #ad0000;
 
   --accent-1: var(--pink);
   --accent-2: var(--mathsoc-grey);
 
-  --text-color: #fff;
+  --text-color: #313131;
   --text-light: #bbb;
+}
+
+// Other design
+:root {
+  --border: 1px solid var(--border-color);
 }
 
 // Measurements
@@ -27,4 +32,24 @@
   --navbar-height: 75px;
 
   --transition: 0.15s linear;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #333;
+    --background-2: #222;
+    --background-3: #444;
+    --background-hover: var(--background-2);
+    --border: #fff;
+
+    --pink: #ff2588;
+
+    --destructive: #ff0000;
+
+    --accent-1: var(--pink);
+    --accent-2: var(--mathsoc-grey);
+
+    --text-color: #fff;
+    --text-light: #bbb;
+  }
 }

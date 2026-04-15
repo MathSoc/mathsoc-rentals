@@ -50,7 +50,7 @@ export default function RentalsPage() {
         onRowClick={setSelectedRental}
         title="Rentals"
         cta={
-          <Button variant="pink" onClick={() => setCreateOpen(true)}>
+          <Button variant="white" onClick={() => setCreateOpen(true)}>
             Create new
           </Button>
         }

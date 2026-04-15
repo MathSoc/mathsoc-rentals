@@ -44,7 +44,7 @@ export default function ClubsPage() {
         onRowClick={setSelectedClub}
         title="Clubs"
         cta={
-          <Button variant="pink" onClick={() => setCreateOpen(true)}>
+          <Button variant="white" onClick={() => setCreateOpen(true)}>
             Create new
           </Button>
         }

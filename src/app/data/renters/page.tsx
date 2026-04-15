@@ -47,7 +47,7 @@ export default function RentersPage() {
         onRowClick={setSelectedRenter}
         title="Renters"
         cta={
-          <Button variant="pink" onClick={() => setCreateOpen(true)}>
+          <Button variant="white" onClick={() => setCreateOpen(true)}>
             Create new
           </Button>
         }

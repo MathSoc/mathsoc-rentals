@@ -1,10 +1,11 @@
 "use client";
 
-import { redirect } from "next/navigation";
-import { useSession, signIn } from "next-auth/react";
-import "./login.scss";
-import { Button } from "../components/button/button.client";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { Backdrop } from "../components/backdrop/backdrop";
+import { Button } from "../components/button/button.client";
+import "./login.scss";
 
 export default function AuthDebug() {
   const { data: session } = useSession();
@@ -16,7 +17,7 @@ export default function AuthDebug() {
 
   return (
     <main id="login-page">
-      <div className="sign-in-container">
+      <Backdrop className="sign-in-container">
         <div className="logo-container">
           <Image
             src="/img/icons/vertical-logo.svg"
@@ -26,10 +27,10 @@ export default function AuthDebug() {
             style={{ objectFit: "contain" }}
           />
         </div>
-        <Button onClick={() => signIn("google")} variant="pink">
+        <Button onClick={() => signIn("google")} variant="alt">
           sign in
         </Button>
-      </div>
+      </Backdrop>
     </main>
   );
 }

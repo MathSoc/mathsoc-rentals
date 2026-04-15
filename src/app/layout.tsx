@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { Electrolize } from "next/font/google";
+import { Fustat } from "next/font/google";
 import { Navigation } from "./components/navbar/navbar";
 import "./globals.scss";
 import { Providers } from "./providers";
 
-const titleFont = Electrolize({
+const titleFont = Fustat({
   variable: "--primary-font",
-  // subsets: ["latin"],
   weight: ["400"],
 });
 

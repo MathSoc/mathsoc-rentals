@@ -2,6 +2,7 @@
 
 import { Row } from "@/app/components/layout/layout-components";
 import React from "react";
+import { Backdrop } from "../backdrop/backdrop";
 import "./data-table.scss";
 
 type DataTableColumn<T> = {
@@ -39,30 +40,32 @@ export function DataTable<T>({
         <h1>{title}</h1>
         {cta}
       </Row>
-      <table className="data-table">
-        <thead>
-          <tr>
-            {columns.map((col, i) => (
-              <th key={i}>{col.header}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr
-              key={getRowKey(row)}
-              className="data-table-row"
-              onClick={() => onRowClick(row)}
-              onKeyDown={(e) => handleRowKeyDown(e, row)}
-              aria-label={getRowAriaLabel(row)}
-            >
+      <Backdrop>
+        <table className="data-table">
+          <thead>
+            <tr>
               {columns.map((col, i) => (
-                <td key={i}>{col.cell(row)}</td>
+                <th key={i}>{col.header}</th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr
+                key={getRowKey(row)}
+                className="data-table-row"
+                onClick={() => onRowClick(row)}
+                onKeyDown={(e) => handleRowKeyDown(e, row)}
+                aria-label={getRowAriaLabel(row)}
+              >
+                {columns.map((col, i) => (
+                  <td key={i}>{col.cell(row)}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Backdrop>
     </div>
   );
 }

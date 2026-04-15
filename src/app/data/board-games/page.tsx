@@ -51,7 +51,7 @@ export default function BoardGamesPage() {
         onRowClick={setSelectedBoardGame}
         title="Board Games"
         cta={
-          <Button variant="pink" onClick={() => setCreateOpen(true)}>
+          <Button variant="white" onClick={() => setCreateOpen(true)}>
             Create new
           </Button>
         }
