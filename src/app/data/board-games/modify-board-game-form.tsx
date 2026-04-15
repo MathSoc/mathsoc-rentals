@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
-import { Dialog } from "@/app/components/dialog/dialog.client";
+import { DeleteDialog } from "@/app/components/dialog/delete-dialog/delete-dialog";
 import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
 import { BoardGame } from "@/app/util/types";
@@ -166,7 +166,7 @@ export const ModifyBoardGameForm: React.FC<ModifyBoardGameFormProps> = ({
       </DrawerForm>
 
       <DeleteDialog
-        boardGame={boardGame}
+        title={boardGame.title}
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
         onDeleteConfirm={handleDeleteConfirm}
@@ -174,29 +174,3 @@ export const ModifyBoardGameForm: React.FC<ModifyBoardGameFormProps> = ({
     </div>
   );
 };
-
-function DeleteDialog({
-  boardGame,
-  open,
-  setOpen,
-  onDeleteConfirm,
-}: {
-  boardGame: BoardGame;
-  open: boolean;
-  setOpen: (isOpen: boolean) => void;
-  onDeleteConfirm: () => void;
-}) {
-  return (
-    <Dialog open={open} onOpenChange={setOpen} title="Delete board game">
-      <p>Are you sure you want to delete &quot;{boardGame.title}&quot;?</p>
-      <Column className="buttons">
-        <Button variant="destructive" onClick={onDeleteConfirm}>
-          Confirm
-        </Button>
-        <Button variant="white" onClick={() => setOpen(false)}>
-          Cancel
-        </Button>
-      </Column>
-    </Dialog>
-  );
-}

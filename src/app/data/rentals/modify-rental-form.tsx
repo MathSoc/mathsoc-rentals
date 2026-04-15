@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
-import { Dialog } from "@/app/components/dialog/dialog.client";
+import { DeleteDialog } from "@/app/components/dialog/delete-dialog/delete-dialog";
 import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
 import { Rental } from "@/app/util/types";
@@ -247,6 +247,7 @@ export const ModifyRentalForm: React.FC<ModifyRentalFormProps> = ({
       </DrawerForm>
 
       <DeleteDialog
+        title={`Rental ${rental.id}`}
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
         onDeleteConfirm={handleDeleteConfirm}
@@ -254,27 +255,3 @@ export const ModifyRentalForm: React.FC<ModifyRentalFormProps> = ({
     </div>
   );
 };
-
-function DeleteDialog({
-  open,
-  setOpen,
-  onDeleteConfirm,
-}: {
-  open: boolean;
-  setOpen: (isOpen: boolean) => void;
-  onDeleteConfirm: () => void;
-}) {
-  return (
-    <Dialog open={open} onOpenChange={setOpen} title="Delete rental">
-      <p>Are you sure you want to delete this rental?</p>
-      <Column className="buttons">
-        <Button variant="destructive" onClick={onDeleteConfirm}>
-          Confirm
-        </Button>
-        <Button variant="white" onClick={() => setOpen(false)}>
-          Cancel
-        </Button>
-      </Column>
-    </Dialog>
-  );
-}

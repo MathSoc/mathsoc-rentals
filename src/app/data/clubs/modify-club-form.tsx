@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
-import { Dialog } from "@/app/components/dialog/dialog.client";
+import { DeleteDialog } from "@/app/components/dialog/delete-dialog/delete-dialog";
 import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
 import { Club } from "@/app/util/types";
@@ -94,7 +94,7 @@ export const ModifyClubForm: React.FC<ModifyClubFormProps> = ({
       </DrawerForm>
 
       <DeleteDialog
-        club={club}
+        title={club.name}
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
         onDeleteConfirm={handleDeleteConfirm}
@@ -102,29 +102,3 @@ export const ModifyClubForm: React.FC<ModifyClubFormProps> = ({
     </div>
   );
 };
-
-function DeleteDialog({
-  club,
-  open,
-  setOpen,
-  onDeleteConfirm,
-}: {
-  club: Club;
-  open: boolean;
-  setOpen: (isOpen: boolean) => void;
-  onDeleteConfirm: () => void;
-}) {
-  return (
-    <Dialog open={open} onOpenChange={setOpen} title="Delete club">
-      <p>Are you sure you want to delete &quot;{club.name}&quot;?</p>
-      <Column className="buttons">
-        <Button variant="destructive" onClick={onDeleteConfirm}>
-          Confirm
-        </Button>
-        <Button variant="white" onClick={() => setOpen(false)}>
-          Cancel
-        </Button>
-      </Column>
-    </Dialog>
-  );
-}

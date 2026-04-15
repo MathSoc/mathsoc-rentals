@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
-import { Dialog } from "@/app/components/dialog/dialog.client";
+import { DeleteDialog } from "@/app/components/dialog/delete-dialog/delete-dialog";
 import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
 import {
@@ -235,7 +235,7 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
       </DrawerForm>
 
       <DeleteDialog
-        copy={copy}
+        title={`Copy #${copy.copyNumber}`}
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
         onDeleteConfirm={handleDeleteConfirm}
@@ -243,29 +243,3 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
     </div>
   );
 };
-
-function DeleteDialog({
-  copy,
-  open,
-  setOpen,
-  onDeleteConfirm,
-}: {
-  copy: Copy;
-  open: boolean;
-  setOpen: (isOpen: boolean) => void;
-  onDeleteConfirm: () => void;
-}) {
-  return (
-    <Dialog open={open} onOpenChange={setOpen} title="Delete copy">
-      <p>Are you sure you want to delete Copy #{copy.copyNumber}?</p>
-      <Column className="buttons">
-        <Button variant="destructive" onClick={onDeleteConfirm}>
-          Confirm
-        </Button>
-        <Button variant="white" onClick={() => setOpen(false)}>
-          Cancel
-        </Button>
-      </Column>
-    </Dialog>
-  );
-}

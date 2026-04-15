@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
-import { Dialog } from "@/app/components/dialog/dialog.client";
+import { DeleteDialog } from "@/app/components/dialog/delete-dialog/delete-dialog";
 import { DrawerForm } from "@/app/components/drawer/drawer-form/drawer-form";
 import { Column } from "@/app/components/layout/layout-components";
 import { Renter } from "@/app/util/types";
@@ -119,7 +119,7 @@ export const ModifyRenterForm: React.FC<ModifyRenterFormProps> = ({
       </DrawerForm>
 
       <DeleteDialog
-        renter={renter}
+        title={renter.name}
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
         onDeleteConfirm={handleDeleteConfirm}
@@ -127,29 +127,3 @@ export const ModifyRenterForm: React.FC<ModifyRenterFormProps> = ({
     </div>
   );
 };
-
-function DeleteDialog({
-  renter,
-  open,
-  setOpen,
-  onDeleteConfirm,
-}: {
-  renter: Renter;
-  open: boolean;
-  setOpen: (isOpen: boolean) => void;
-  onDeleteConfirm: () => void;
-}) {
-  return (
-    <Dialog open={open} onOpenChange={setOpen} title="Delete renter">
-      <p>Are you sure you want to delete &quot;{renter.name}&quot;?</p>
-      <Column className="buttons">
-        <Button variant="destructive" onClick={onDeleteConfirm}>
-          Confirm
-        </Button>
-        <Button variant="white" onClick={() => setOpen(false)}>
-          Cancel
-        </Button>
-      </Column>
-    </Dialog>
-  );
-}

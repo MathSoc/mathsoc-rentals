@@ -4,19 +4,12 @@ import { CloseButton } from "@/app/components/close-button/close-button";
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import "./dialog.scss";
 
-type DialogProps = {
+export const Dialog: React.FC<{
+  title: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  title: string;
   children?: React.ReactNode;
-};
-
-export const Dialog: React.FC<DialogProps> = ({
-  open,
-  onOpenChange,
-  title,
-  children,
-}) => {
+}> = ({ open, onOpenChange, title, children }) => {
   return (
     <BaseDialog.Root open={open} onOpenChange={onOpenChange}>
       <BaseDialog.Portal>

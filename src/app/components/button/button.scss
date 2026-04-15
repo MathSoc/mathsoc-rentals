@@ -5,7 +5,9 @@ a.button:visited {
   border: 1px solid white;
   text-decoration: none !important;
   transition: 0.15s linear;
-  margin: 16px 0;
+  margin: 8px 0;
+  min-width: 250px;
+  height: min-content;
   display: block;
   text-align: center;
 
