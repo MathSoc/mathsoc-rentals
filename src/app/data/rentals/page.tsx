@@ -56,7 +56,7 @@ export default function RentalsPage() {
             header: "Copy",
             cell: (rental) => `${rental.item?.name} ${rental.copy?.copyNumber}`,
           },
-          { header: "Owner", cell: (rental) => rental.club?.name },
+          { header: "Renting club", cell: (rental) => rental.club?.name },
           { header: "Status", cell: (rental) => getRentalStatus(rental) },
           { header: "Checkout", cell: (rental) => rental.checkoutDate },
           { header: "Due", cell: (rental) => rental.dueDate },
