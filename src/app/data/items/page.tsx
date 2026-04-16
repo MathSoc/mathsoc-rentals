@@ -27,7 +27,7 @@ export default function ItemsPage() {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
   const fetchItems = async (): Promise<
-    GetManyResponse<Item & { boardGame?: BoardGame }>
+    GetManyResponse<Item & { board_game?: BoardGame }>
   > => {
     const res = await fetch(`/api/items?page_size=100&expand=["board_games"]`);
     if (!res.ok) throw new Error("Failed to fetch items");
@@ -49,7 +49,7 @@ export default function ItemsPage() {
         columns={[
           { header: "Name", cell: (item) => item.name },
           { header: "Type", cell: (item) => item.type },
-          { header: "Board game", cell: (item) => item.boardGame?.title },
+          { header: "Board game", cell: (item) => item.board_game?.title },
         ]}
         onRowClick={setSelectedItem}
         title="Items"
