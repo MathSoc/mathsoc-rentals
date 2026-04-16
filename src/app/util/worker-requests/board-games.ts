@@ -1,4 +1,4 @@
-import { BoardGame } from "@/app/util/types";
+import { BoardGame, Page } from "@/app/util/types";
 
 type CreateBoardGamePayload = {
   title: string;
@@ -18,6 +18,25 @@ type ModifyBoardGamePayload = {
   bgg_id?: string;
   difficulty?: string;
 };
+
+export async function getBoardGames(
+  page: Page,
+  filters?: Partial<{ ids: string[] }>,
+): Promise<BoardGame[]> {
+  const params = new URLSearchParams({
+    page_size: page.page_size.toString(),
+    page_index: page.page_index.toString(),
+  });
+
+  if (filters) {
+    params.set("filters", JSON.stringify(filters));
+  }
+
+  const res = await fetch(`/api/board-games?${params}`);
+  if (!res.ok) throw new Error("Failed to search board games");
+  const json = await res.json();
+  return json.data as BoardGame[];
+}
 
 export async function searchBoardGames(q: string): Promise<BoardGame[]> {
   const params = new URLSearchParams({ q, page_size: "20" });

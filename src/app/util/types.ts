@@ -1,3 +1,8 @@
+export type Page = {
+  page_size: number;
+  page_index: number;
+};
+
 export type ItemType = "board_game" | "calculator" | "textbook";
 
 export type Item = {

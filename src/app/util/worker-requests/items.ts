@@ -1,4 +1,23 @@
-import { Item, ItemType } from "../types";
+import { BoardGame, Item, ItemType, Page } from "../types";
+
+export async function getItems(
+  page: Page,
+  expand?: string[],
+): Promise<(Item & { board_game?: BoardGame })[]> {
+  const params = new URLSearchParams({
+    page_size: page.page_size.toString(),
+    page_index: page.page_index.toString(),
+  });
+
+  if (expand) {
+    params.set("expand", JSON.stringify(expand));
+  }
+
+  const res = await fetch(`/api/items?${params}`);
+  if (!res.ok) throw new Error("Failed to fetch items");
+  const json = await res.json();
+  return json.data as (Item & { board_game?: BoardGame })[];
+}
 
 export async function searchItems(q: string): Promise<Item[]> {
   const params = new URLSearchParams({ q, page_size: "20" });

@@ -1,42 +1,29 @@
 "use client";
 
-import { GetManyResponse } from "@/app/api/types";
 import { Button } from "@/app/components/button/button.client";
 import { DataTable } from "@/app/components/data-table/data-table.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Page } from "@/app/components/page/page-component";
-import { BoardGame } from "@/app/util/types";
+import { BoardGame, Item } from "@/app/util/types";
+import { getItems } from "@/app/util/worker-requests/items";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CreateItemForm } from "./create-item-form";
 import { ModifyItemForm } from "./modify-item-form";
 
-type Item = {
-  id: string;
-  name: string;
-  type: "board_game" | "calculator" | "textbook";
-  boardGameId: string | null;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-};
+type ItemWithBoardGame = Item & { board_game?: BoardGame };
 
 // @todo use SSR for table data fetching
 export default function ItemsPage() {
   const [createOpen, setCreateOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
-
-  const fetchItems = async (): Promise<
-    GetManyResponse<Item & { board_game?: BoardGame }>
-  > => {
-    const res = await fetch(`/api/items?page_size=100&expand=["board_games"]`);
-    if (!res.ok) throw new Error("Failed to fetch items");
-    return res.json();
-  };
+  const [selectedItem, setSelectedItem] = useState<ItemWithBoardGame | null>(
+    null,
+  );
 
   const { data, isPending, isError } = useQuery({
     queryKey: ["items"],
-    queryFn: fetchItems,
+    queryFn: async () =>
+      await getItems({ page_index: 0, page_size: 100 }, ["board_games"]),
   });
 
   if (isPending) return <p>Loading...</p>;
@@ -44,23 +31,25 @@ export default function ItemsPage() {
 
   return (
     <Page id="items-page" wide>
-      <DataTable
-        rows={data.data}
-        columns={[
-          { header: "Name", cell: (item) => item.name },
-          { header: "Type", cell: (item) => item.type },
-          { header: "Board game", cell: (item) => item.board_game?.title },
-        ]}
-        onRowClick={setSelectedItem}
-        title="Items"
-        cta={
-          <Button variant="white" onClick={() => setCreateOpen(true)}>
-            Create new
-          </Button>
-        }
-        getRowKey={(item) => item.id}
-        getRowAriaLabel={(item) => `Edit ${item.name}`}
-      />
+      {data ? (
+        <DataTable
+          rows={data}
+          columns={[
+            { header: "Name", cell: (item) => item.name },
+            { header: "Type", cell: (item) => item.type },
+            { header: "Board game", cell: (item) => item.board_game?.title },
+          ]}
+          onRowClick={setSelectedItem}
+          title="Items"
+          cta={
+            <Button variant="white" onClick={() => setCreateOpen(true)}>
+              Create new
+            </Button>
+          }
+          getRowKey={(item) => item.id}
+          getRowAriaLabel={(item) => `Edit ${item.name}`}
+        />
+      ) : null}
 
       <DrawerPanel
         open={createOpen}
