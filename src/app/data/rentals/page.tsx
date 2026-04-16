@@ -5,7 +5,7 @@ import { Button } from "@/app/components/button/button.client";
 import { DataTable } from "@/app/components/data-table/data-table.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Page } from "@/app/components/page/page-component";
-import { Rental } from "@/app/util/types";
+import { BoardGame, Club, Copy, Item, Rental, Renter } from "@/app/util/types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CreateRentalForm } from "./create-rental-form";
@@ -17,13 +17,23 @@ function getRentalStatus(rental: Rental): string {
   return "active";
 }
 
+type ExpandedRental = Rental & {
+  renter: Renter | null;
+  item: Item | null;
+  copy: Copy | null;
+  board_game: BoardGame | null;
+  club: Club | null;
+};
+
 // @todo use SSR for table data fetching
 export default function RentalsPage() {
   const [createOpen, setCreateOpen] = useState(false);
   const [selectedRental, setSelectedRental] = useState<Rental | null>(null);
 
-  const fetchRentals = async (): Promise<GetManyResponse<Rental>> => {
-    const res = await fetch("/api/rentals?page_size=100");
+  const fetchRentals = async (): Promise<GetManyResponse<ExpandedRental>> => {
+    const res = await fetch(
+      `/api/rentals?page_size=100&expand=["board_games", "renters", "clubs"]`,
+    );
     if (!res.ok) throw new Error("Failed to fetch rentals");
     return res.json();
   };
@@ -41,8 +51,12 @@ export default function RentalsPage() {
       <DataTable
         rows={data.data}
         columns={[
-          { header: "Renter ID", cell: (rental) => rental.renterId },
-          { header: "Copy ID", cell: (rental) => rental.copyId },
+          { header: "Renter", cell: (rental) => rental.renter?.name },
+          {
+            header: "Copy",
+            cell: (rental) => `${rental.item?.name} ${rental.copy?.copyNumber}`,
+          },
+          { header: "Owner", cell: (rental) => rental.club?.name },
           { header: "Status", cell: (rental) => getRentalStatus(rental) },
           { header: "Checkout", cell: (rental) => rental.checkoutDate },
           { header: "Due", cell: (rental) => rental.dueDate },
