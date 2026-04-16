@@ -1,3 +1,24 @@
+import { Page, Renter } from "../types";
+
+export async function getRenters(
+  page: Page,
+  filters?: Partial<{ ids: string[] }>,
+): Promise<Renter[]> {
+  const params = new URLSearchParams({
+    page_size: page.page_size.toString(),
+    page_index: page.page_index.toString(),
+  });
+
+  if (filters) {
+    params.set("filters", JSON.stringify(filters));
+  }
+
+  const res = await fetch(`/api/renters?${params}`);
+  if (!res.ok) throw new Error("Failed to fetch renters");
+  const json = await res.json();
+  return json.data as Renter[];
+}
+
 type CreateRenterPayload = {
   name: string;
   questId: string;

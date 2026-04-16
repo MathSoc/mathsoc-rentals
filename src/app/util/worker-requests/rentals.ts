@@ -1,3 +1,32 @@
+import { BoardGame, Club, Copy, Item, Page, Rental, Renter } from "../types";
+
+export type ExpandedRental = Rental & {
+  renter: Renter | null;
+  item: Item | null;
+  copy: Copy | null;
+  board_game: BoardGame | null;
+  club: Club | null;
+};
+
+export async function getRentals(
+  page: Page,
+  expand?: string[],
+): Promise<ExpandedRental[]> {
+  const params = new URLSearchParams({
+    page_size: page.page_size.toString(),
+    page_index: page.page_index.toString(),
+  });
+
+  if (expand) {
+    params.set("expand", JSON.stringify(expand));
+  }
+
+  const res = await fetch(`/api/rentals?${params}`);
+  if (!res.ok) throw new Error("Failed to fetch rentals");
+  const json = await res.json();
+  return json.data as ExpandedRental[];
+}
+
 type CreateRentalPayload = {
   copy_id: string;
   renter_id: string;
