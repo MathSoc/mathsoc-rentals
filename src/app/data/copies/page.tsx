@@ -40,7 +40,7 @@ export default function CopiesPage() {
           setPageIndex={setPageIndex}
           columns={[
             { header: "Item", cell: (copy) => copy.item?.name },
-            { header: "Copy #", cell: (copy) => copy.copyNumber },
+            { header: "Copy #", cell: (copy) => copy.barcode },
             { header: "Status", cell: (copy) => copy.status },
             { header: "Condition", cell: (copy) => copy.condition },
             { header: "Location", cell: (copy) => copy.physicalLocation },
@@ -53,7 +53,7 @@ export default function CopiesPage() {
             </Button>
           }
           getRowKey={(copy) => copy.id}
-          getRowAriaLabel={(copy) => `Edit Copy #${copy.copyNumber}`}
+          getRowAriaLabel={(copy) => `Edit Copy #${copy.barcode}`}
         />
       ) : null}
 
@@ -72,7 +72,7 @@ export default function CopiesPage() {
             setSelectedCopy(null);
           }
         }}
-        title={`Edit Copy #${selectedCopy?.copyNumber}`}
+        title={`Edit Copy #${selectedCopy?.barcode}`}
       >
         {selectedCopy ? (
           <ModifyCopyForm

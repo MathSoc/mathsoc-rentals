@@ -41,8 +41,7 @@ export default function Home() {
             { header: "Name", cell: (rental) => rental.item?.name },
             {
               header: "Copy",
-              cell: (rental) =>
-                `${rental.item?.name} ${rental.copy?.copyNumber}`,
+              cell: (rental) => `${rental.item?.name} ${rental.copy?.barcode}`,
             },
             { header: "Status", cell: (rental) => getRentalStatus(rental) },
             { header: "Due", cell: (rental) => rental.dueDate },

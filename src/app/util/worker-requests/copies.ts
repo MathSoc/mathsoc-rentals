@@ -20,8 +20,8 @@ export async function getCopies(
 
 type CreateCopyPayload = {
   item_id: string;
-  copy_number: number;
-  physical_identifier?: string;
+  barcode: string;
+  copy_label?: string;
   physical_location?: string;
   condition: string;
   status: CopyStatus;
@@ -30,8 +30,8 @@ type CreateCopyPayload = {
 type ModifyCopyPayload = {
   id: string;
   item_id: string;
-  copy_number: number;
-  physical_identifier?: string;
+  barcode: string;
+  copy_label?: string;
   physical_location?: string;
   condition: string;
   status: CopyStatus;

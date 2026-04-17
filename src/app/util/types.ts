@@ -31,8 +31,8 @@ export type CopyStatus =
 export type Copy = {
   id: string;
   itemId: string;
-  copyNumber: number;
-  physicalIdentifier: string | null;
+  barcode: string;
+  copyLabel: string | null;
   physicalLocation: string | null;
   condition: string;
   status: CopyStatus;
