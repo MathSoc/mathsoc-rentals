@@ -18,17 +18,23 @@ function getRentalStatus(rental: Rental): string {
 
 export default function Home() {
   const [pageIndex, setPageIndex] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const PAGE_SIZE = 25;
   const { data } = useQuery({
-    queryKey: ["rentals", pageIndex],
+    queryKey: ["rentals", pageIndex, searchQuery],
     queryFn: async () =>
       await getRentals(
         { page_index: pageIndex, page_size: PAGE_SIZE },
         ["board_games", "renters", "clubs"],
-        { status: "active" },
+        { status: "active", q: searchQuery || undefined },
       ),
   });
+
+  const handleSearchChange = (q: string) => {
+    setSearchQuery(q);
+    setPageIndex(0);
+  };
 
   return (
     <Page id="rentals-page" wide>
@@ -47,6 +53,8 @@ export default function Home() {
             { header: "Due", cell: (rental) => rental.dueDate },
           ]}
           title="Rentals"
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
           getExpandedRowContents={(r) => <RowExpansion rental={r} />}
           getRowKey={(rental) => rental.id}
           getRowAriaLabel={(rental) => `Edit rental for ${rental.renterId}`}

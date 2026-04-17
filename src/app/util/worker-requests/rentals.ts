@@ -22,6 +22,7 @@ export async function getRentals(
   expand?: string[],
   filters?: {
     status?: "active";
+    q?: string;
   },
 ): Promise<PagedResponse<ExpandedRental>> {
   const params = new URLSearchParams({
@@ -35,6 +36,10 @@ export async function getRentals(
 
   if (filters?.status) {
     params.set("status", filters.status);
+  }
+
+  if (filters?.q) {
+    params.set("q", filters.q);
   }
 
   const res = await fetch(`/api/rentals?${params}`);

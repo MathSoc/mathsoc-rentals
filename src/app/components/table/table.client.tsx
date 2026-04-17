@@ -1,6 +1,6 @@
 "use client";
 
-import { Row } from "@/app/components/layout/layout-components";
+import { Column, Row } from "@/app/components/layout/layout-components";
 import React, { useState } from "react";
 import { Backdrop } from "../backdrop/backdrop";
 import "./table.scss";
@@ -21,6 +21,8 @@ export function Table<T>({
   getExpandedRowContents,
   page,
   setPageIndex,
+  searchQuery,
+  onSearchChange,
 }: {
   rows: T[];
   columns: TableColumn<T>[];
@@ -36,6 +38,8 @@ export function Table<T>({
     total_count: number;
   };
   setPageIndex: (index: number) => void;
+  searchQuery?: string;
+  onSearchChange?: (q: string) => void;
 }) {
   const [expandedRow, setExpandedRow] = useState<T | null>(null);
 
@@ -59,9 +63,21 @@ export function Table<T>({
   };
 
   return (
-    <div className="data-table-container">
+    <Column className="data-table-container">
       <Row className="data-table-title-row">
-        <h1>{title}</h1>
+        <Column className="data-table-title-left">
+          <h1>{title}</h1>
+          {onSearchChange !== undefined && (
+            <input
+              className="data-table-search"
+              type="search"
+              placeholder="Search…"
+              value={searchQuery ?? ""}
+              onChange={(e) => onSearchChange(e.target.value)}
+              aria-label={`Search ${title}`}
+            />
+          )}
+        </Column>
         {cta}
       </Row>
       <Backdrop>
@@ -103,7 +119,7 @@ export function Table<T>({
         </table>
       </Backdrop>
       <Pagination page={page} setPageIndex={setPageIndex} />
-    </div>
+    </Column>
   );
 }
 
