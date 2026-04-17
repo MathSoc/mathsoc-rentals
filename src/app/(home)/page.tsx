@@ -23,11 +23,11 @@ export default function Home() {
   const { data } = useQuery({
     queryKey: ["rentals", pageIndex],
     queryFn: async () =>
-      await getRentals({ page_index: pageIndex, page_size: PAGE_SIZE }, [
-        "board_games",
-        "renters",
-        "clubs",
-      ]),
+      await getRentals(
+        { page_index: pageIndex, page_size: PAGE_SIZE },
+        ["board_games", "renters", "clubs"],
+        { status: "active" },
+      ),
   });
 
   return (
