@@ -1,9 +1,9 @@
-import { Page, Renter } from "../types";
+import { Page, PagedResponse, Renter } from "../types";
 
 export async function getRenters(
   page: Page,
   filters?: Partial<{ ids: string[] }>,
-): Promise<Renter[]> {
+): Promise<PagedResponse<Renter>> {
   const params = new URLSearchParams({
     page_size: page.page_size.toString(),
     page_index: page.page_index.toString(),
@@ -15,8 +15,7 @@ export async function getRenters(
 
   const res = await fetch(`/api/renters?${params}`);
   if (!res.ok) throw new Error("Failed to fetch renters");
-  const json = await res.json();
-  return json.data as Renter[];
+  return res.json();
 }
 
 type CreateRenterPayload = {

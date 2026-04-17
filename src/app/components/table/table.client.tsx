@@ -3,14 +3,14 @@
 import { Row } from "@/app/components/layout/layout-components";
 import React from "react";
 import { Backdrop } from "../backdrop/backdrop";
-import "./data-table.scss";
+import "./table.scss";
 
-type DataTableColumn<T> = {
+type TableColumn<T> = {
   header: string;
   cell: (row: T) => React.ReactNode;
 };
 
-export function DataTable<T>({
+export function Table<T>({
   rows,
   columns,
   onRowClick,
@@ -18,14 +18,22 @@ export function DataTable<T>({
   cta,
   getRowKey,
   getRowAriaLabel,
+  page,
+  setPageIndex,
 }: {
   rows: T[];
-  columns: DataTableColumn<T>[];
+  columns: TableColumn<T>[];
   onRowClick: (row: T) => void;
   title: string;
   cta?: React.ReactNode;
   getRowKey: (row: T) => string;
   getRowAriaLabel: (row: T) => string;
+  page: {
+    page_index: number;
+    page_size: number;
+    total_count: number;
+  };
+  setPageIndex: (index: number) => void;
 }) {
   const handleRowKeyDown = (e: React.KeyboardEvent, row: T) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -66,6 +74,49 @@ export function DataTable<T>({
           </tbody>
         </table>
       </Backdrop>
+      <Pagination page={page} setPageIndex={setPageIndex} />
     </div>
+  );
+}
+
+function Pagination({
+  page,
+  setPageIndex,
+}: {
+  page: {
+    total_count: number;
+    page_size: number;
+    page_index: number;
+  };
+  setPageIndex: (index: number) => void;
+}) {
+  const { total_count, page_size, page_index } = page;
+
+  const pageCount = Math.ceil(total_count / page_size);
+  const lastResult = page_size * (page_index + 1);
+
+  return (
+    <Row className="data-table-pagination">
+      <button
+        className="pagination-btn"
+        disabled={page_index <= 0}
+        onClick={() => setPageIndex(page_index - 1)}
+        aria-label="Previous page"
+      >
+        ‹
+      </button>
+      <span className="pagination-label">
+        Results {page_size * page_index + 1} –{" "}
+        {Math.min(lastResult, total_count)} of {total_count}
+      </span>
+      <button
+        className="pagination-btn"
+        disabled={page_index >= pageCount - 1}
+        onClick={() => setPageIndex(page_index + 1)}
+        aria-label="Next page"
+      >
+        ›
+      </button>
+    </Row>
   );
 }

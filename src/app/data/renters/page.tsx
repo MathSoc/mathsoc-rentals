@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
-import { DataTable } from "@/app/components/data-table/data-table.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Page } from "@/app/components/page/page-component";
+import { Table } from "@/app/components/table/table.client";
 import { Renter } from "@/app/util/types";
 import { getRenters } from "@/app/util/worker-requests/renters";
 import { useQuery } from "@tanstack/react-query";
@@ -15,10 +15,13 @@ import { ModifyRenterForm } from "./modify-renter-form";
 export default function RentersPage() {
   const [createOpen, setCreateOpen] = useState(false);
   const [selectedRenter, setSelectedRenter] = useState<Renter | null>(null);
+  const [pageIndex, setPageIndex] = useState(0);
 
+  const PAGE_SIZE = 25;
   const { data, isPending, isError } = useQuery({
-    queryKey: ["renters"],
-    queryFn: async () => await getRenters({ page_index: 0, page_size: 100 }),
+    queryKey: ["renters", pageIndex],
+    queryFn: async () =>
+      await getRenters({ page_index: pageIndex, page_size: PAGE_SIZE }),
   });
 
   if (isPending) return <p>Loading...</p>;
@@ -27,8 +30,10 @@ export default function RentersPage() {
   return (
     <Page id="renters-page" wide>
       {data ? (
-        <DataTable
-          rows={data}
+        <Table
+          rows={data.data}
+          page={data.meta}
+          setPageIndex={setPageIndex}
           columns={[
             { header: "Name", cell: (renter) => renter.name },
             { header: "Quest ID", cell: (renter) => renter.questId },

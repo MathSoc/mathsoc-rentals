@@ -3,6 +3,15 @@ export type Page = {
   page_index: number;
 };
 
+export type PagedResponse<T> = {
+  data: T[];
+  meta: {
+    total_count: number;
+    page_index: number;
+    page_size: number;
+  };
+};
+
 export type ItemType = "board_game" | "calculator" | "textbook";
 
 export type Item = {

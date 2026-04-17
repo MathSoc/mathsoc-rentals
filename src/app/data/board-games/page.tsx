@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
-import { DataTable } from "@/app/components/data-table/data-table.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Page } from "@/app/components/page/page-component";
+import { Table } from "@/app/components/table/table.client";
 import { BoardGame } from "@/app/util/types";
 import { getBoardGames } from "@/app/util/worker-requests/board-games";
 import { useQuery } from "@tanstack/react-query";
@@ -17,10 +17,13 @@ export default function BoardGamesPage() {
   const [selectedBoardGame, setSelectedBoardGame] = useState<BoardGame | null>(
     null,
   );
+  const [pageIndex, setPageIndex] = useState(0);
 
+  const PAGE_SIZE = 25;
   const { data, isPending, isError } = useQuery({
-    queryKey: ["board-games"],
-    queryFn: async () => await getBoardGames({ page_index: 0, page_size: 100 }),
+    queryKey: ["board-games", pageIndex],
+    queryFn: async () =>
+      await getBoardGames({ page_index: pageIndex, page_size: PAGE_SIZE }),
   });
 
   if (isPending) return <p>Loading...</p>;
@@ -29,8 +32,10 @@ export default function BoardGamesPage() {
   return (
     <Page id="board-games-page" wide>
       {data ? (
-        <DataTable
-          rows={data}
+        <Table
+          rows={data.data}
+          page={data.meta}
+          setPageIndex={setPageIndex}
           columns={[
             { header: "Title", cell: (bg) => bg.title },
             {
