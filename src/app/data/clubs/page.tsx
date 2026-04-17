@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
-import { DataTable } from "@/app/components/data-table/data-table.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Page } from "@/app/components/page/page-component";
+import { Table } from "@/app/components/table/table.client";
 import { Club } from "@/app/util/types";
 import { getClubs } from "@/app/util/worker-requests/clubs";
 import { useQuery } from "@tanstack/react-query";
@@ -15,10 +15,13 @@ import { ModifyClubForm } from "./modify-club-form";
 export default function ClubsPage() {
   const [createOpen, setCreateOpen] = useState(false);
   const [selectedClub, setSelectedClub] = useState<Club | null>(null);
+  const [pageIndex, setPageIndex] = useState(0);
 
+  const PAGE_SIZE = 25;
   const { data, isPending, isError } = useQuery({
-    queryKey: ["clubs"],
-    queryFn: async () => await getClubs({ page_index: 0, page_size: 100 }),
+    queryKey: ["clubs", pageIndex],
+    queryFn: async () =>
+      await getClubs({ page_index: pageIndex, page_size: PAGE_SIZE }),
   });
 
   if (isPending) return <p>Loading...</p>;
@@ -27,8 +30,10 @@ export default function ClubsPage() {
   return (
     <Page id="clubs-page" wide>
       {data ? (
-        <DataTable
-          rows={data}
+        <Table
+          rows={data.data}
+          page={data.meta}
+          setPageIndex={setPageIndex}
           columns={[{ header: "Name", cell: (club) => club.name }]}
           onRowClick={setSelectedClub}
           title="Clubs"

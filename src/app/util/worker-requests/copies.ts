@@ -1,9 +1,9 @@
-import { Copy, CopyStatus, Item, Page } from "../types";
+import { Copy, CopyStatus, Item, Page, PagedResponse } from "../types";
 
 export async function getCopies(
   page: Page,
   expand?: string[],
-): Promise<(Copy & { item: Item | null })[]> {
+): Promise<PagedResponse<Copy & { item: Item | null }>> {
   const params = new URLSearchParams({
     page_size: page.page_size.toString(),
     page_index: page.page_index.toString(),
@@ -15,8 +15,7 @@ export async function getCopies(
 
   const res = await fetch(`/api/copies?${params}`);
   if (!res.ok) throw new Error("Failed to fetch copies");
-  const json = await res.json();
-  return json.data as (Copy & { item: Item | null })[];
+  return res.json();
 }
 
 type CreateCopyPayload = {

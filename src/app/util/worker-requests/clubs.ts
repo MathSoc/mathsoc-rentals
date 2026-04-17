@@ -1,9 +1,9 @@
-import { Club, Page } from "../types";
+import { Club, Page, PagedResponse } from "../types";
 
 export async function getClubs(
   page: Page,
   filters?: Partial<{ ids: string[] }>,
-): Promise<Club[]> {
+): Promise<PagedResponse<Club>> {
   const params = new URLSearchParams({
     page_size: page.page_size.toString(),
     page_index: page.page_index.toString(),
@@ -15,8 +15,7 @@ export async function getClubs(
 
   const res = await fetch(`/api/clubs?${params}`);
   if (!res.ok) throw new Error("Failed to fetch clubs");
-  const json = await res.json();
-  return json.data as Club[];
+  return res.json();
 }
 
 type CreateClubPayload = {

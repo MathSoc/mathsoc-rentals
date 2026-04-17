@@ -1,14 +1,11 @@
 "use client";
 
 import { Button } from "@/app/components/button/button.client";
-import { DataTable } from "@/app/components/data-table/data-table.client";
 import { DrawerPanel } from "@/app/components/drawer/drawer.client";
 import { Page } from "@/app/components/page/page-component";
+import { Table } from "@/app/components/table/table.client";
 import { Rental } from "@/app/util/types";
-import {
-  ExpandedRental,
-  getRentals,
-} from "@/app/util/worker-requests/rentals";
+import { ExpandedRental, getRentals } from "@/app/util/worker-requests/rentals";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CreateRentalForm } from "./create-rental-form";
@@ -26,11 +23,13 @@ export default function RentalsPage() {
   const [selectedRental, setSelectedRental] = useState<ExpandedRental | null>(
     null,
   );
+  const [pageIndex, setPageIndex] = useState(0);
 
+  const PAGE_SIZE = 25;
   const { data, isPending, isError } = useQuery({
-    queryKey: ["rentals"],
+    queryKey: ["rentals", pageIndex],
     queryFn: async () =>
-      await getRentals({ page_index: 0, page_size: 100 }, [
+      await getRentals({ page_index: pageIndex, page_size: PAGE_SIZE }, [
         "board_games",
         "renters",
         "clubs",
@@ -43,8 +42,10 @@ export default function RentalsPage() {
   return (
     <Page id="rentals-page" wide>
       {data ? (
-        <DataTable
-          rows={data}
+        <Table
+          rows={data.data}
+          page={data.meta}
+          setPageIndex={setPageIndex}
           columns={[
             { header: "Renter", cell: (rental) => rental.renter?.name },
             {
