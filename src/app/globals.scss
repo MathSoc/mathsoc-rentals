@@ -4,7 +4,7 @@
 body {
   background-color: var(--background-2);
   font-family: var(--primary-font);
-  color: var(--text-color);
+  color: var(--text);
   margin: 0;
 
   display: flex;
@@ -48,7 +48,7 @@ h4 {
 }
 
 p {
-  color: var(--text-color);
+  color: var(--text);
   overflow-wrap: break-word;
 }
 
@@ -71,7 +71,7 @@ button {
   border: none;
   font-size: inherit;
   font-family: var(--primary-font);
-  color: var(--text-color);
+  color: var(--text);
   box-sizing: border-box;
   cursor: pointer;
 }
@@ -93,7 +93,7 @@ textarea {
   background-color: var(--background);
   border: var(--border);
   border-radius: 0;
-  color: var(--text-color);
+  color: var(--text);
   transition: var(--transition);
 
   font-family: var(--primary-font);
@@ -153,23 +153,6 @@ table {
   td,
   th {
     padding: 8px;
-  }
-
-  thead {
-    tr {
-      background-color: var(--accent-1);
-      color: white;
-    }
-  }
-
-  tbody {
-    tr:nth-child(odd) {
-      background-color: var(--background);
-    }
-
-    tr:nth-child(even) {
-      background-color: var(--background-2);
-    }
   }
 }
 

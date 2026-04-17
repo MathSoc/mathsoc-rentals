@@ -1,0 +1,9 @@
+.rental-row-expansion.column {
+  align-items: baseline;
+  color: var(--text-light);
+
+  .renter-name,
+  .due-date {
+    color: var(--text);
+  }
+}

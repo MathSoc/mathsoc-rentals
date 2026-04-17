@@ -1,4 +1,13 @@
-import { BoardGame, Club, Copy, Item, Page, PagedResponse, Rental, Renter } from "../types";
+import {
+  BoardGame,
+  Club,
+  Copy,
+  Item,
+  Page,
+  PagedResponse,
+  Rental,
+  Renter,
+} from "../types";
 
 export type ExpandedRental = Rental & {
   renter: Renter | null;
@@ -11,6 +20,9 @@ export type ExpandedRental = Rental & {
 export async function getRentals(
   page: Page,
   expand?: string[],
+  filters?: {
+    status?: "active";
+  },
 ): Promise<PagedResponse<ExpandedRental>> {
   const params = new URLSearchParams({
     page_size: page.page_size.toString(),
@@ -19,6 +31,10 @@ export async function getRentals(
 
   if (expand) {
     params.set("expand", JSON.stringify(expand));
+  }
+
+  if (filters?.status) {
+    params.set("status", filters.status);
   }
 
   const res = await fetch(`/api/rentals?${params}`);

@@ -1,7 +1,7 @@
 "use client";
 
 import { Row } from "@/app/components/layout/layout-components";
-import React from "react";
+import React, { useState } from "react";
 import { Backdrop } from "../backdrop/backdrop";
 import "./table.scss";
 
@@ -18,16 +18,18 @@ export function Table<T>({
   cta,
   getRowKey,
   getRowAriaLabel,
+  getExpandedRowContents,
   page,
   setPageIndex,
 }: {
   rows: T[];
   columns: TableColumn<T>[];
-  onRowClick: (row: T) => void;
+  onRowClick?: (row: T) => void;
   title: string;
   cta?: React.ReactNode;
   getRowKey: (row: T) => string;
   getRowAriaLabel: (row: T) => string;
+  getExpandedRowContents?: (row: T) => React.ReactNode;
   page: {
     page_index: number;
     page_size: number;
@@ -35,10 +37,24 @@ export function Table<T>({
   };
   setPageIndex: (index: number) => void;
 }) {
+  const [expandedRow, setExpandedRow] = useState<T | null>(null);
+
+  const handleRowClick = (row: T) => {
+    if (getExpandedRowContents) {
+      if (row === expandedRow) {
+        setExpandedRow(null);
+      } else {
+        setExpandedRow(row);
+      }
+    }
+
+    onRowClick?.(row);
+  };
+
   const handleRowKeyDown = (e: React.KeyboardEvent, row: T) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      onRowClick(row);
+      handleRowClick(row);
     }
   };
 
@@ -58,18 +74,30 @@ export function Table<T>({
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr
-                key={getRowKey(row)}
-                className="data-table-row"
-                onClick={() => onRowClick(row)}
-                onKeyDown={(e) => handleRowKeyDown(e, row)}
-                aria-label={getRowAriaLabel(row)}
-              >
-                {columns.map((col, i) => (
-                  <td key={i}>{col.cell(row)}</td>
-                ))}
-              </tr>
+            {rows.map((row, rowIndex) => (
+              <>
+                <tr
+                  key={getRowKey(row)}
+                  className={`data-table-row ${rowIndex % 2 === 0 ? "even" : "odd"}`}
+                  onClick={() => handleRowClick(row)}
+                  onKeyDown={(e) => handleRowKeyDown(e, row)}
+                  aria-label={getRowAriaLabel(row)}
+                >
+                  {columns.map((col, i) => (
+                    <td key={i}>{col.cell(row)}</td>
+                  ))}
+                </tr>
+                {row === expandedRow ? (
+                  <tr
+                    key={`row-expansion-${getRowKey(row)}`}
+                    className={`row-expansion ${rowIndex % 2 === 0 ? "even" : "odd"}`}
+                  >
+                    <td colSpan={columns.length}>
+                      {getExpandedRowContents?.(row)}
+                    </td>
+                  </tr>
+                ) : null}
+              </>
             ))}
           </tbody>
         </table>
