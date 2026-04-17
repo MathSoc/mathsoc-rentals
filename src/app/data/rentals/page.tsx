@@ -50,8 +50,7 @@ export default function RentalsPage() {
             { header: "Renter", cell: (rental) => rental.renter?.name },
             {
               header: "Copy",
-              cell: (rental) =>
-                `${rental.item?.name} ${rental.copy?.copyNumber}`,
+              cell: (rental) => `${rental.item?.name} ${rental.copy?.barcode}`,
             },
             { header: "Renting club", cell: (rental) => rental.club?.name },
             { header: "Status", cell: (rental) => getRentalStatus(rental) },

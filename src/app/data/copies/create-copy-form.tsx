@@ -39,10 +39,10 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
   const { add: addToast } = Toast.useToastManager();
 
   const [itemId, setItemId] = useState<string | null>(null);
-  const [copyNumber, setCopyNumber] = useState(1);
+  const [barcode, setBarcode] = useState("");
   const [condition, setCondition] = useState("");
   const [status, setStatus] = useState<CopyStatus>("available");
-  const [physicalIdentifier, setPhysicalIdentifier] = useState("");
+  const [copyLabel, setCopyLabel] = useState("");
   const [physicalLocation, setPhysicalLocation] = useState("");
   const [ownerClubId, setOwnerClubId] = useState("");
 
@@ -59,7 +59,7 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
     mutationFn: sendCreateCopyRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["copies"] });
-      addToast({ title: `Copy #${copyNumber} successfully created` });
+      addToast({ title: `Copy #${barcode} successfully created` });
       onSuccess();
     },
     onError: () => {
@@ -77,10 +77,10 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
 
     createCopy({
       item_id: itemId,
-      copy_number: copyNumber,
+      barcode: barcode,
       condition,
       status,
-      physical_identifier: physicalIdentifier || undefined,
+      copy_label: copyLabel || undefined,
       physical_location: physicalLocation || undefined,
       owner_club_id: ownerClubId,
     });
@@ -100,13 +100,12 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
       </Column>
 
       <Column className="form-field">
-        <label htmlFor="copy-number">Copy number</label>
+        <label htmlFor="barcode">Barcode</label>
         <input
-          id="copy-number"
-          type="number"
-          min={1}
-          value={copyNumber}
-          onChange={(e) => setCopyNumber(parseInt(e.target.value))}
+          id="barcode"
+          type="text"
+          value={barcode}
+          onChange={(e) => setBarcode(e.target.value)}
           required
         />
       </Column>
@@ -138,12 +137,12 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
       </Column>
 
       <Column className="form-field">
-        <label htmlFor="copy-physical-identifier">Physical identifier</label>
+        <label htmlFor="copy-copy-label">Copy label</label>
         <input
-          id="copy-physical-identifier"
+          id="copy-copy-label"
           type="text"
-          value={physicalIdentifier}
-          onChange={(e) => setPhysicalIdentifier(e.target.value)}
+          value={copyLabel}
+          onChange={(e) => setCopyLabel(e.target.value)}
         />
       </Column>
 

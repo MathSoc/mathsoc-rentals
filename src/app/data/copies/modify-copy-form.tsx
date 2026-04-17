@@ -45,12 +45,10 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
   const { add: addToast } = Toast.useToastManager();
 
   const [itemId, setItemId] = useState<string>(copy.itemId);
-  const [copyNumber, setCopyNumber] = useState(copy.copyNumber);
+  const [barcode, setBarcode] = useState(copy.barcode);
   const [condition, setCondition] = useState(copy.condition);
   const [status, setStatus] = useState<CopyStatus>(copy.status);
-  const [physicalIdentifier, setPhysicalIdentifier] = useState(
-    copy.physicalIdentifier ?? "",
-  );
+  const [copyLabel, setCopyLabel] = useState(copy.copyLabel ?? "");
   const [physicalLocation, setPhysicalLocation] = useState(
     copy.physicalLocation ?? "",
   );
@@ -83,7 +81,7 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
     mutationFn: sendModifyCopyRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["copies"] });
-      addToast({ title: `Copy #${copyNumber} successfully updated` });
+      addToast({ title: `Copy #${barcode} successfully updated` });
       onSuccess();
     },
     onError: () => {
@@ -95,7 +93,7 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
     mutationFn: sendDeleteCopyRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["copies"] });
-      addToast({ title: `Copy #${copy.copyNumber} successfully deleted` });
+      addToast({ title: `Copy #${copy.barcode} successfully deleted` });
       onSuccess();
     },
     onError: () => {
@@ -108,10 +106,10 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
     modifyCopy({
       id: copy.id,
       item_id: itemId,
-      copy_number: copyNumber,
+      barcode: barcode,
       condition,
       status,
-      physical_identifier: physicalIdentifier || undefined,
+      copy_label: copyLabel || undefined,
       physical_location: physicalLocation || undefined,
       owner_club_id: ownerClubId,
     });
@@ -141,13 +139,12 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
         </Column>
 
         <Column className="form-field">
-          <label htmlFor="modify-copy-number">Copy number</label>
+          <label htmlFor="modify-barcode">Barcode</label>
           <input
-            id="modify-copy-number"
-            type="number"
-            min={1}
-            value={copyNumber}
-            onChange={(e) => setCopyNumber(parseInt(e.target.value))}
+            id="modify-barcode"
+            type="text"
+            value={barcode}
+            onChange={(e) => setBarcode(e.target.value)}
             required
           />
         </Column>
@@ -179,14 +176,12 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
         </Column>
 
         <Column className="form-field">
-          <label htmlFor="modify-copy-physical-identifier">
-            Physical identifier
-          </label>
+          <label htmlFor="modify-copy-copy-label">Copy label</label>
           <input
-            id="modify-copy-physical-identifier"
+            id="modify-copy-copy-label"
             type="text"
-            value={physicalIdentifier}
-            onChange={(e) => setPhysicalIdentifier(e.target.value)}
+            value={copyLabel}
+            onChange={(e) => setCopyLabel(e.target.value)}
           />
         </Column>
 
@@ -235,7 +230,7 @@ export const ModifyCopyForm: React.FC<ModifyCopyFormProps> = ({
       </DrawerForm>
 
       <DeleteDialog
-        title={`Copy #${copy.copyNumber}`}
+        title={`Copy #${copy.barcode}`}
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
         onDeleteConfirm={handleDeleteConfirm}
