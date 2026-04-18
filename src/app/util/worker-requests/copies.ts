@@ -1,9 +1,26 @@
-import { Copy, CopyStatus, Item, Page, PagedResponse } from "../types";
+import {
+  Copy,
+  CopyStatus,
+  Item,
+  Page,
+  PagedResponse,
+  Rental,
+  Renter,
+} from "../types";
+
+export type ExpandedCopy = Copy & {
+  item: Item | null;
+  rental: Rental | null;
+  renter: Renter | null;
+};
 
 export async function getCopies(
   page: Page,
-  expand?: string[],
-): Promise<PagedResponse<Copy & { item: Item | null }>> {
+  expand?: ("items" | "active_rentals" | "renters")[],
+  filters?: {
+    q?: string;
+  },
+): Promise<PagedResponse<ExpandedCopy>> {
   const params = new URLSearchParams({
     page_size: page.page_size.toString(),
     page_index: page.page_index.toString(),
@@ -11,6 +28,10 @@ export async function getCopies(
 
   if (expand) {
     params.set("expand", JSON.stringify(expand));
+  }
+
+  if (filters?.q) {
+    params.set("q", filters.q);
   }
 
   const res = await fetch(`/api/copies?${params}`);

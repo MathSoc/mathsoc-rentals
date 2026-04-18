@@ -1,7 +1,7 @@
 "use client";
 
 import { Column, Row } from "@/app/components/layout/layout-components";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Backdrop } from "../backdrop/backdrop";
 import "./table.scss";
 
@@ -24,7 +24,7 @@ export function Table<T>({
   searchQuery,
   onSearchChange,
 }: {
-  rows: T[];
+  rows?: T[];
   columns: TableColumn<T>[];
   onRowClick?: (row: T) => void;
   title: string;
@@ -32,7 +32,7 @@ export function Table<T>({
   getRowKey: (row: T) => string;
   getRowAriaLabel: (row: T) => string;
   getExpandedRowContents?: (row: T) => React.ReactNode;
-  page: {
+  page?: {
     page_index: number;
     page_size: number;
     total_count: number;
@@ -90,31 +90,31 @@ export function Table<T>({
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, rowIndex) => (
-              <>
-                <tr
-                  key={getRowKey(row)}
-                  className={`data-table-row ${rowIndex % 2 === 0 ? "even" : "odd"}`}
-                  onClick={() => handleRowClick(row)}
-                  onKeyDown={(e) => handleRowKeyDown(e, row)}
-                  aria-label={getRowAriaLabel(row)}
-                >
-                  {columns.map((col, i) => (
-                    <td key={i}>{col.cell(row)}</td>
-                  ))}
-                </tr>
-                {row === expandedRow ? (
-                  <tr
-                    key={`row-expansion-${getRowKey(row)}`}
-                    className={`row-expansion ${rowIndex % 2 === 0 ? "even" : "odd"}`}
-                  >
-                    <td colSpan={columns.length}>
-                      {getExpandedRowContents?.(row)}
-                    </td>
-                  </tr>
-                ) : null}
-              </>
-            ))}
+            {rows
+              ? rows.map((row, rowIndex) => (
+                  <Fragment key={getRowKey(row)}>
+                    <tr
+                      className={`data-table-row ${rowIndex % 2 === 0 ? "even" : "odd"}`}
+                      onClick={() => handleRowClick(row)}
+                      onKeyDown={(e) => handleRowKeyDown(e, row)}
+                      aria-label={getRowAriaLabel(row)}
+                    >
+                      {columns.map((col, i) => (
+                        <td key={i}>{col.cell(row)}</td>
+                      ))}
+                    </tr>
+                    {row === expandedRow ? (
+                      <tr
+                        className={`row-expansion ${rowIndex % 2 === 0 ? "even" : "odd"}`}
+                      >
+                        <td colSpan={columns.length}>
+                          {getExpandedRowContents?.(row)}
+                        </td>
+                      </tr>
+                    ) : null}
+                  </Fragment>
+                ))
+              : null}
           </tbody>
         </table>
       </Backdrop>
@@ -127,13 +127,17 @@ function Pagination({
   page,
   setPageIndex,
 }: {
-  page: {
+  page?: {
     total_count: number;
     page_size: number;
     page_index: number;
   };
   setPageIndex: (index: number) => void;
 }) {
+  if (!page) {
+    return null;
+  }
+
   const { total_count, page_size, page_index } = page;
 
   const pageCount = Math.ceil(total_count / page_size);
