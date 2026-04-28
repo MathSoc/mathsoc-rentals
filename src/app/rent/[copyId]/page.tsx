@@ -5,12 +5,17 @@ export default async function RentPage({
   searchParams,
 }: {
   params: Promise<{ copyId: string }>;
-  searchParams: Promise<{ item?: string; barcode?: string }>;
+  searchParams: Promise<{ item?: string; barcode?: string; location?: string }>;
 }) {
   const { copyId } = await params;
-  const { item, barcode } = await searchParams;
+  const { item, barcode, location } = await searchParams;
 
   return (
-    <RentWizard copyId={copyId} itemName={item ?? ""} barcode={barcode ?? ""} />
+    <RentWizard
+      copyId={copyId}
+      itemName={item ?? ""}
+      barcode={barcode ?? ""}
+      physicalLocation={location ?? ""}
+    />
   );
 }

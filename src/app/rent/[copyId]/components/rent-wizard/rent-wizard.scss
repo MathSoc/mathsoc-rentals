@@ -6,6 +6,15 @@
     align-items: center;
   }
 
+  .rent-wizard-copy-details {
+    gap: 2px;
+
+    .rent-wizard-copy-detail-secondary {
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+  }
+
   .rent-wizard-step {
     padding: 24px;
     gap: 20px;

@@ -62,7 +62,16 @@ addToast({ title: "..." });
 ```
 
 ### Layout components
-Use `Column`, `Row`, `Centered` from `src/app/components/layout/layout-components.tsx`. These render divs with flex direction classes. `Page` wraps page content and accepts a `wide` boolean prop.
+Use `Column`, `Row`, `Centered` from `src/app/components/layout/layout-components.tsx`. These render divs with flex direction classes — `Column` gets class `"column"`, `Row` gets class `"row"`. `Page` wraps page content and accepts a `wide` boolean prop.
+
+When writing SCSS for a container that can be either a `Row` or `Column`, target the rendered class:
+
+```scss
+.my-container {
+  &.row { justify-content: flex-end; }
+  &.column { align-items: baseline; }
+}
+```
 
 ### Form fields
 Wrap each field in `<Column className="form-field">` with a `<label>` and the input.
@@ -90,3 +99,25 @@ Each resource has a file at `src/app/util/worker-requests/[resource].ts` exporti
 - `sendDelete[Resource]Request(id)` — DELETE
 
 The `expand` parameter is a string array of relation names (e.g. `["items", "active_rentals", "renters"]`) that the backend joins and returns as flat fields on the response objects.
+
+### Stepper component
+`src/app/components/stepper/stepper.tsx` — reusable visual progress indicator with numbered circles on a connecting line. Completed steps show a checkmark, active step is filled, pending steps are outlined.
+
+```tsx
+<Stepper steps={["Renter", "Details", "Review"]} currentStep={step} />
+```
+
+### Multi-step wizard pattern
+Lift all state to a parent component. Each step is its own sub-component receiving only the props and callbacks it needs. The parent renders one step at a time using `? ... : null`.
+
+### Passing display data via URL params
+When navigating to a page that only needs data for display (not mutation), pass it via URL search params to avoid an extra fetch. The server component page reads `searchParams` (a `Promise` in Next.js 16) and passes the values as props to the client component.
+
+```tsx
+// navigating
+router.push(`/rent/${id}?item=${encodeURIComponent(name)}`);
+
+// page.tsx (server component)
+const { item } = await searchParams;
+return <ClientComponent itemName={item ?? ""} />;
+```

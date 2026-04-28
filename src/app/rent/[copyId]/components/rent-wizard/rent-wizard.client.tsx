@@ -24,20 +24,24 @@ export function RentWizard({
   copyId,
   itemName,
   barcode,
+  physicalLocation,
 }: {
   copyId: string;
   itemName: string;
   barcode: string;
+  physicalLocation: string;
 }) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { add: addToast } = Toast.useToastManager();
 
+  const today = new Date().toISOString().split("T")[0];
+
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [renterId, setRenterId] = useState("");
   const [renterLabel, setRenterLabel] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [checkoutDate, setCheckoutDate] = useState("");
+  const [checkoutDate, setCheckoutDate] = useState(today);
   const [rentingClubId, setRentingClubId] = useState("");
   const [rentingClubName, setRentingClubName] = useState("");
 
@@ -104,10 +108,14 @@ export function RentWizard({
 
         {step === 2 ? (
           <RentalDetailsStep
+            itemName={itemName}
+            barcode={barcode}
+            physicalLocation={physicalLocation}
             dueDate={dueDate}
             checkoutDate={checkoutDate}
             rentingClubId={rentingClubId}
             clubs={clubsData?.data ?? []}
+            minDate={today}
             onDueDateChange={setDueDate}
             onCheckoutDateChange={setCheckoutDate}
             onClubChange={handleClubChange}
@@ -174,20 +182,28 @@ function SelectRenterStep({
 }
 
 function RentalDetailsStep({
+  itemName,
+  barcode,
+  physicalLocation,
   dueDate,
   checkoutDate,
   rentingClubId,
   clubs,
+  minDate,
   onDueDateChange,
   onCheckoutDateChange,
   onClubChange,
   onBack,
   onNext,
 }: {
+  itemName: string;
+  barcode: string;
+  physicalLocation: string;
   dueDate: string;
   checkoutDate: string;
   rentingClubId: string;
   clubs: ClubOption[];
+  minDate: string;
   onDueDateChange: (v: string) => void;
   onCheckoutDateChange: (v: string) => void;
   onClubChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -198,23 +214,33 @@ function RentalDetailsStep({
     <Backdrop>
       <Column className="rent-wizard-step">
         <h2>Rental details</h2>
+        <Column className="rent-wizard-copy-details">
+          <span>{itemName || "—"}</span>
+          <span className="rent-wizard-copy-detail-secondary">{barcode}</span>
+          {physicalLocation ? (
+            <span className="rent-wizard-copy-detail-secondary">{physicalLocation}</span>
+          ) : null}
+        </Column>
+        <Column className="form-field">
+          <label htmlFor="wizard-checkout-date">Checkout date</label>
+          <input
+            id="wizard-checkout-date"
+            type="date"
+            value={checkoutDate}
+            min={minDate}
+            onChange={(e) => onCheckoutDateChange(e.target.value)}
+            required
+          />
+        </Column>
         <Column className="form-field">
           <label htmlFor="wizard-due-date">Due date</label>
           <input
             id="wizard-due-date"
             type="date"
             value={dueDate}
+            min={minDate}
             onChange={(e) => onDueDateChange(e.target.value)}
             required
-          />
-        </Column>
-        <Column className="form-field">
-          <label htmlFor="wizard-checkout-date">Checkout date (optional)</label>
-          <input
-            id="wizard-checkout-date"
-            type="date"
-            value={checkoutDate}
-            onChange={(e) => onCheckoutDateChange(e.target.value)}
           />
         </Column>
         <Column className="form-field">
@@ -234,7 +260,7 @@ function RentalDetailsStep({
         </Column>
         <Row className="rent-wizard-nav">
           <Button onClick={onBack}>Back</Button>
-          <Button variant="primary" disabled={!dueDate} onClick={onNext}>
+          <Button variant="primary" disabled={!dueDate || !checkoutDate} onClick={onNext}>
             Next
           </Button>
         </Row>
@@ -281,16 +307,16 @@ function ReviewStep({
             <span className="rent-wizard-review-label">Renter</span>
             <span>{renterLabel}</span>
           </Row>
-          <Row className="rent-wizard-review-row">
-            <span className="rent-wizard-review-label">Due date</span>
-            <span>{dueDate}</span>
-          </Row>
           {checkoutDate ? (
             <Row className="rent-wizard-review-row">
               <span className="rent-wizard-review-label">Checkout date</span>
               <span>{checkoutDate}</span>
             </Row>
           ) : null}
+          <Row className="rent-wizard-review-row">
+            <span className="rent-wizard-review-label">Due date</span>
+            <span>{dueDate}</span>
+          </Row>
           {rentingClubName ? (
             <Row className="rent-wizard-review-row">
               <span className="rent-wizard-review-label">Renting club</span>

@@ -8,7 +8,7 @@ import { Table } from "@/app/components/table/table.client";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Column } from "../components/layout/layout-components";
+import { Column, Row } from "../components/layout/layout-components";
 import { ExpandedCopy, getCopies } from "../util/worker-requests/copies";
 
 export default function Home() {
@@ -62,18 +62,18 @@ function RowExpansion({ copy }: { copy: ExpandedCopy }) {
 
   if (copy.rental === null) {
     return (
-      <Column className="rental-row-expansion">
+      <Row className="rental-row-expansion">
         <Button
           size="small"
           onClick={() =>
             router.push(
-              `/rent/${copy.id}?item=${encodeURIComponent(copy.item?.name ?? "")}&barcode=${encodeURIComponent(copy.barcode)}`,
+              `/rent/${copy.id}?item=${encodeURIComponent(copy.item?.name ?? "")}&barcode=${encodeURIComponent(copy.barcode)}&location=${encodeURIComponent(copy.physicalLocation ?? "")}`,
             )
           }
         >
           Rent
         </Button>
-      </Column>
+      </Row>
     );
   }
 

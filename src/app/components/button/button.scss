@@ -70,20 +70,13 @@ a.button:visited {
   }
 
   &:disabled {
-    color: var(--mathsoc-grey-2);
-    border-color: var(--mathsoc-grey-2);
+    color: var(--text-light);
+    background-color: var(--disabled);
     cursor: unset;
 
     &:hover {
-      color: var(--mathsoc-grey-2) !important;
-      background-color: var(--background);
+      color: var(--text-light) !important;
+      background-color: var(--disabled);
     }
-  }
-}
-
-.backdrop,
-.dialog {
-  button {
-    background-color: var(--background-3);
   }
 }
