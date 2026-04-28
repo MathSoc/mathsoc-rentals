@@ -33,7 +33,7 @@ export function SearchSelect({
   displayValue?: string | null;
 }) {
   const [inputValue, setInputValue] = useState(displayValue ?? "");
-  const debouncedQuery = useDebounced(inputValue.trim(), 3000);
+  const debouncedQuery = useDebounced(inputValue.trim(), 300);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
