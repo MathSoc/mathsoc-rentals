@@ -11,14 +11,16 @@ import { useState } from "react";
 import { Column, Row } from "../components/layout/layout-components";
 import { ExpandedCopy, getCopies } from "../util/worker-requests/copies";
 import { ReturnConfirmDialog } from "./components/return-confirm-dialog";
+import { useDebounced } from "../util/hooks";
 
 export default function Home() {
   const [pageIndex, setPageIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const sendableQuery = useDebounced(searchQuery, 500);
 
   const PAGE_SIZE = 25;
   const { data } = useQuery({
-    queryKey: ["rentals", pageIndex, searchQuery],
+    queryKey: ["rentals", pageIndex, sendableQuery],
     queryFn: async () =>
       await getCopies(
         { page_index: pageIndex, page_size: PAGE_SIZE },
