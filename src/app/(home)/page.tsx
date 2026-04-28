@@ -64,7 +64,6 @@ function RowExpansion({ copy }: { copy: ExpandedCopy }) {
     return (
       <Column className="rental-row-expansion">
         <Button
-          variant="lighter"
           size="small"
           onClick={() =>
             router.push(

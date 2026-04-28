@@ -37,11 +37,7 @@ export default function ClubsPage() {
           columns={[{ header: "Name", cell: (club) => club.name }]}
           onRowClick={setSelectedClub}
           title="Clubs"
-          cta={
-            <Button variant="white" onClick={() => setCreateOpen(true)}>
-              Create new
-            </Button>
-          }
+          cta={<Button onClick={() => setCreateOpen(true)}>Create new</Button>}
           getRowKey={(club) => club.id}
           getRowAriaLabel={(club) => `Edit ${club.name}`}
         />

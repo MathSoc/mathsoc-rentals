@@ -180,7 +180,7 @@ export const CreateRentalForm: React.FC<CreateRentalFormProps> = ({
         />
       </Column>
 
-      <Button variant="pink" disabled={isPending}>
+      <Button variant="primary" disabled={isPending}>
         {isPending ? "Creating..." : "Create rental"}
       </Button>
     </DrawerForm>

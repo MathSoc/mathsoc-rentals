@@ -163,10 +163,8 @@ function SelectRenterStep({
           />
         </Column>
         <Row className="rent-wizard-nav">
-          <Button variant="white" onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button variant="pink" disabled={!renterId} onClick={onNext}>
+          <Button onClick={onCancel}>Cancel</Button>
+          <Button variant="primary" disabled={!renterId} onClick={onNext}>
             Next
           </Button>
         </Row>
@@ -221,7 +219,11 @@ function RentalDetailsStep({
         </Column>
         <Column className="form-field">
           <label htmlFor="wizard-club">Renting club (optional)</label>
-          <select id="wizard-club" value={rentingClubId} onChange={onClubChange}>
+          <select
+            id="wizard-club"
+            value={rentingClubId}
+            onChange={onClubChange}
+          >
             <option value="">None</option>
             {clubs.map((club) => (
               <option key={club.id} value={club.id}>
@@ -231,10 +233,8 @@ function RentalDetailsStep({
           </select>
         </Column>
         <Row className="rent-wizard-nav">
-          <Button variant="white" onClick={onBack}>
-            Back
-          </Button>
-          <Button variant="pink" disabled={!dueDate} onClick={onNext}>
+          <Button onClick={onBack}>Back</Button>
+          <Button variant="primary" disabled={!dueDate} onClick={onNext}>
             Next
           </Button>
         </Row>
@@ -299,10 +299,10 @@ function ReviewStep({
           ) : null}
         </Column>
         <Row className="rent-wizard-nav">
-          <Button variant="white" disabled={isPending} onClick={onBack}>
+          <Button disabled={isPending} onClick={onBack}>
             Back
           </Button>
-          <Button variant="pink" disabled={isPending} onClick={onSubmit}>
+          <Button variant="primary" disabled={isPending} onClick={onSubmit}>
             {isPending ? "Submitting..." : "Submit"}
           </Button>
         </Row>

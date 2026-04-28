@@ -78,12 +78,12 @@ export const ModifyClubForm: React.FC<ModifyClubFormProps> = ({
         </Column>
 
         <Column className="buttons">
-          <Button variant="pink" disabled={isPending}>
+          <Button variant="primary" disabled={isPending}>
             {isModificationPending ? "Saving..." : "Save changes"}
           </Button>
 
           <Button
-            variant="destructive"
+            subvariant="destructive"
             type="button"
             onClick={() => setDeleteDialogOpen(true)}
             disabled={isPending}

@@ -47,11 +47,7 @@ export default function CopiesPage() {
           ]}
           onRowClick={setSelectedCopy}
           title="Copies"
-          cta={
-            <Button variant="white" onClick={() => setCreateOpen(true)}>
-              Create new
-            </Button>
-          }
+          cta={<Button onClick={() => setCreateOpen(true)}>Create new</Button>}
           getRowKey={(copy) => copy.id}
           getRowAriaLabel={(copy) => `Edit Copy #${copy.barcode}`}
         />

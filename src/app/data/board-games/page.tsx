@@ -48,11 +48,7 @@ export default function BoardGamesPage() {
           ]}
           onRowClick={setSelectedBoardGame}
           title="Board Games"
-          cta={
-            <Button variant="white" onClick={() => setCreateOpen(true)}>
-              Create new
-            </Button>
-          }
+          cta={<Button onClick={() => setCreateOpen(true)}>Create new</Button>}
           getRowKey={(bg) => bg.id}
           getRowAriaLabel={(bg) => `Edit ${bg.title}`}
         />

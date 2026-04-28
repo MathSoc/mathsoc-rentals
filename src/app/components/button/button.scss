@@ -17,14 +17,14 @@ a.button:visited {
   &:hover,
   &:focus {
     background-color: white;
-    color: var(--accent-1) !important;
+    color: var(--background) !important;
 
     &:visited {
-      color: var(--accent-1) !important;
+      color: var(--background) !important;
     }
   }
 
-  &.pink {
+  &.primary {
     color: var(--accent-1);
     border-color: var(--accent-1);
     &:visited {
@@ -42,11 +42,12 @@ a.button:visited {
     }
   }
 
-  &.lighter {
-    background-color: var(--background-3);
-  }
-
   &.destructive {
+    &.primary {
+      background-color: var(--destructive);
+      color: #fff;
+    }
+
     color: var(--destructive);
     border-color: var(--destructive);
     &:visited {
@@ -64,22 +65,6 @@ a.button:visited {
     }
   }
 
-  &.white {
-    background-color: var(--background);
-
-    &:visited {
-      background-color: var(--background);
-    }
-  }
-
-  &.alt {
-    background-color: var(--background-2);
-
-    &:visited {
-      background-color: var(--background-2);
-    }
-  }
-
   &.small {
     padding: 4px;
   }
@@ -93,5 +78,12 @@ a.button:visited {
       color: var(--mathsoc-grey-2) !important;
       background-color: var(--background);
     }
+  }
+}
+
+.backdrop,
+.dialog {
+  button {
+    background-color: var(--background-3);
   }
 }
