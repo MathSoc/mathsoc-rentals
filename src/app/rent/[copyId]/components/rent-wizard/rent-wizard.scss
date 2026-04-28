@@ -6,35 +6,12 @@
     align-items: center;
   }
 
-  .rent-wizard-copy-details {
-    gap: 2px;
-
-    .rent-wizard-copy-detail-secondary {
-      color: var(--text-light);
-      font-size: 0.85rem;
-    }
-  }
-
   .rent-wizard-step {
     padding: 24px;
     gap: 20px;
 
     h2 {
       margin: 0;
-    }
-  }
-
-  .rent-wizard-review {
-    gap: 12px;
-
-    .rent-wizard-review-row {
-      justify-content: space-between;
-      gap: 16px;
-
-      .rent-wizard-review-label {
-        color: var(--text-light);
-        min-width: 120px;
-      }
     }
   }
 

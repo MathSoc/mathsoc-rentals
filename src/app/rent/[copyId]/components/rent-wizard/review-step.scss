@@ -1,0 +1,13 @@
+.rent-wizard-review {
+  gap: 12px;
+
+  .rent-wizard-review-row {
+    justify-content: space-between;
+    gap: 16px;
+
+    .rent-wizard-review-label {
+      color: var(--text-light);
+      min-width: 120px;
+    }
+  }
+}

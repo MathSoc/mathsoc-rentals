@@ -16,7 +16,7 @@ a.button:visited {
 
   &:hover,
   &:focus {
-    background-color: white;
+    background-color: var(--text);
     color: var(--background) !important;
 
     &:visited {

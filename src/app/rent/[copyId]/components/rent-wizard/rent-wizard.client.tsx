@@ -1,23 +1,19 @@
 "use client";
 
-import { Button } from "@/app/components/button/button.client";
-import { Backdrop } from "@/app/components/backdrop/backdrop";
 import { Column, Row } from "@/app/components/layout/layout-components";
 import { Page } from "@/app/components/page/page-component";
-import {
-  SearchSelect,
-  SearchSelectItem,
-} from "@/app/components/search-select/search-select.client";
+import { SearchSelectItem } from "@/app/components/search-select/search-select.client";
 import { Stepper } from "@/app/components/stepper/stepper";
 import { sendCreateRentalRequest } from "@/app/util/worker-requests/rentals";
-import { searchRenters } from "@/app/util/worker-requests/renters";
 import { Toast } from "@base-ui/react/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ClubOption, RentalDetailsStep } from "./rental-details-step";
+import { ReviewStep } from "./review-step";
+import { SelectRenterStep } from "./select-renter-step";
 import "./rent-wizard.scss";
 
-type ClubOption = { id: string; name: string };
 type ClubsResponse = { data: ClubOption[] };
 
 export function RentWizard({
@@ -111,6 +107,7 @@ export function RentWizard({
             itemName={itemName}
             barcode={barcode}
             physicalLocation={physicalLocation}
+            renterLabel={renterLabel}
             dueDate={dueDate}
             checkoutDate={checkoutDate}
             rentingClubId={rentingClubId}
@@ -139,200 +136,5 @@ export function RentWizard({
         ) : null}
       </Column>
     </Page>
-  );
-}
-
-function SelectRenterStep({
-  renterId,
-  renterLabel,
-  onSelect,
-  onNext,
-  onCancel,
-}: {
-  renterId: string;
-  renterLabel: string;
-  onSelect: (item: SearchSelectItem | null) => void;
-  onNext: () => void;
-  onCancel: () => void;
-}) {
-  return (
-    <Backdrop>
-      <Column className="rent-wizard-step">
-        <h2>Select a renter</h2>
-        <Column className="form-field">
-          <label>Renter</label>
-          <SearchSelect
-            name="renter"
-            onSearch={searchRenters}
-            onSelect={onSelect}
-            placeholder="Search by name or email..."
-            value={renterId || null}
-            displayValue={renterLabel || null}
-          />
-        </Column>
-        <Row className="rent-wizard-nav">
-          <Button onClick={onCancel}>Cancel</Button>
-          <Button variant="primary" disabled={!renterId} onClick={onNext}>
-            Next
-          </Button>
-        </Row>
-      </Column>
-    </Backdrop>
-  );
-}
-
-function RentalDetailsStep({
-  itemName,
-  barcode,
-  physicalLocation,
-  dueDate,
-  checkoutDate,
-  rentingClubId,
-  clubs,
-  minDate,
-  onDueDateChange,
-  onCheckoutDateChange,
-  onClubChange,
-  onBack,
-  onNext,
-}: {
-  itemName: string;
-  barcode: string;
-  physicalLocation: string;
-  dueDate: string;
-  checkoutDate: string;
-  rentingClubId: string;
-  clubs: ClubOption[];
-  minDate: string;
-  onDueDateChange: (v: string) => void;
-  onCheckoutDateChange: (v: string) => void;
-  onClubChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  onBack: () => void;
-  onNext: () => void;
-}) {
-  return (
-    <Backdrop>
-      <Column className="rent-wizard-step">
-        <h2>Rental details</h2>
-        <Column className="rent-wizard-copy-details">
-          <span>{itemName || "—"}</span>
-          <span className="rent-wizard-copy-detail-secondary">{barcode}</span>
-          {physicalLocation ? (
-            <span className="rent-wizard-copy-detail-secondary">{physicalLocation}</span>
-          ) : null}
-        </Column>
-        <Column className="form-field">
-          <label htmlFor="wizard-checkout-date">Checkout date</label>
-          <input
-            id="wizard-checkout-date"
-            type="date"
-            value={checkoutDate}
-            min={minDate}
-            onChange={(e) => onCheckoutDateChange(e.target.value)}
-            required
-          />
-        </Column>
-        <Column className="form-field">
-          <label htmlFor="wizard-due-date">Due date</label>
-          <input
-            id="wizard-due-date"
-            type="date"
-            value={dueDate}
-            min={minDate}
-            onChange={(e) => onDueDateChange(e.target.value)}
-            required
-          />
-        </Column>
-        <Column className="form-field">
-          <label htmlFor="wizard-club">Renting club (optional)</label>
-          <select
-            id="wizard-club"
-            value={rentingClubId}
-            onChange={onClubChange}
-          >
-            <option value="">None</option>
-            {clubs.map((club) => (
-              <option key={club.id} value={club.id}>
-                {club.name}
-              </option>
-            ))}
-          </select>
-        </Column>
-        <Row className="rent-wizard-nav">
-          <Button onClick={onBack}>Back</Button>
-          <Button variant="primary" disabled={!dueDate || !checkoutDate} onClick={onNext}>
-            Next
-          </Button>
-        </Row>
-      </Column>
-    </Backdrop>
-  );
-}
-
-function ReviewStep({
-  itemName,
-  barcode,
-  renterLabel,
-  dueDate,
-  checkoutDate,
-  rentingClubName,
-  isPending,
-  onBack,
-  onSubmit,
-}: {
-  itemName: string;
-  barcode: string;
-  renterLabel: string;
-  dueDate: string;
-  checkoutDate: string;
-  rentingClubName: string;
-  isPending: boolean;
-  onBack: () => void;
-  onSubmit: () => void;
-}) {
-  return (
-    <Backdrop>
-      <Column className="rent-wizard-step">
-        <h2>Review</h2>
-        <Column className="rent-wizard-review">
-          <Row className="rent-wizard-review-row">
-            <span className="rent-wizard-review-label">Item</span>
-            <span>{itemName || "—"}</span>
-          </Row>
-          <Row className="rent-wizard-review-row">
-            <span className="rent-wizard-review-label">Barcode</span>
-            <span>{barcode || "—"}</span>
-          </Row>
-          <Row className="rent-wizard-review-row">
-            <span className="rent-wizard-review-label">Renter</span>
-            <span>{renterLabel}</span>
-          </Row>
-          {checkoutDate ? (
-            <Row className="rent-wizard-review-row">
-              <span className="rent-wizard-review-label">Checkout date</span>
-              <span>{checkoutDate}</span>
-            </Row>
-          ) : null}
-          <Row className="rent-wizard-review-row">
-            <span className="rent-wizard-review-label">Due date</span>
-            <span>{dueDate}</span>
-          </Row>
-          {rentingClubName ? (
-            <Row className="rent-wizard-review-row">
-              <span className="rent-wizard-review-label">Renting club</span>
-              <span>{rentingClubName}</span>
-            </Row>
-          ) : null}
-        </Column>
-        <Row className="rent-wizard-nav">
-          <Button disabled={isPending} onClick={onBack}>
-            Back
-          </Button>
-          <Button variant="primary" disabled={isPending} onClick={onSubmit}>
-            {isPending ? "Submitting..." : "Submit"}
-          </Button>
-        </Row>
-      </Column>
-    </Backdrop>
   );
 }

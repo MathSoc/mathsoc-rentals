@@ -32,7 +32,9 @@ type ModifyRenterPayload = {
   email: string;
 };
 
-export async function sendCreateRenterRequest(payload: CreateRenterPayload) {
+export async function sendCreateRenterRequest(
+  payload: CreateRenterPayload,
+): Promise<{ data: Renter[] }> {
   const res = await fetch("/api/renters", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

@@ -10,24 +10,34 @@ export type SearchSelectItem = {
   value: string;
 };
 
+const ADD_NEW_VALUE = "__add_new__";
+
 export function SearchSelect({
   name,
   onSearch,
   onSelect,
+  onAddNew,
   placeholder,
+  addNewLabel,
   value,
   displayValue,
 }: {
   name: string;
   onSearch: (query: string) => Promise<SearchSelectItem[]>;
   onSelect: (item: SearchSelectItem | null) => void;
+  onAddNew?: () => void;
   placeholder?: string;
+  addNewLabel?: string;
   value?: string | null;
   displayValue?: string | null;
 }) {
   const [inputValue, setInputValue] = useState(displayValue ?? "");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setInputValue(displayValue ?? "");
+  }, [displayValue]);
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -54,6 +64,10 @@ export function SearchSelect({
   };
 
   const handleValueChange = (newValue: string | null) => {
+    if (newValue === ADD_NEW_VALUE) {
+      onAddNew?.();
+      return;
+    }
     const selected = items.find((item) => item.value === newValue) ?? null;
     if (selected) {
       setInputValue(selected.label);
@@ -90,6 +104,14 @@ export function SearchSelect({
                   <Combobox.Empty className="search-select-empty">
                     {inputValue ? "No results" : "Type to search..."}
                   </Combobox.Empty>
+                ) : null}
+                {onAddNew ? (
+                  <Combobox.Item
+                    value={ADD_NEW_VALUE}
+                    className="search-select-item search-select-add-new"
+                  >
+                    {addNewLabel ?? "+ Add new"}
+                  </Combobox.Item>
                 ) : null}
               </Combobox.List>
             </Combobox.Popup>
