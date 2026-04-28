@@ -2,8 +2,9 @@
 
 import { Combobox } from "@base-ui/react/combobox";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./search-select.scss";
+import { useDebounced } from "@/app/util/hooks";
 
 export type SearchSelectItem = {
   label: string;
@@ -32,22 +33,12 @@ export function SearchSelect({
   displayValue?: string | null;
 }) {
   const [inputValue, setInputValue] = useState(displayValue ?? "");
-  const [debouncedQuery, setDebouncedQuery] = useState("");
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debouncedQuery = useDebounced(inputValue.trim(), 3000);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setInputValue(displayValue ?? "");
   }, [displayValue]);
-
-  useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      setDebouncedQuery(inputValue.trim());
-    }, 300);
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-    };
-  }, [inputValue]);
 
   const { data: items = [] } = useQuery({
     queryKey: ["search-select", name, debouncedQuery],

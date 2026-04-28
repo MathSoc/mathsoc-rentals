@@ -1,10 +1,7 @@
 .rental-row-expansion {
   &.row {
-    justify-content: flex-end;
-  }
-
-  &.column {
-    align-items: baseline;
+    justify-content: space-between;
+    align-items: center;
   }
 
   color: var(--text-light);
@@ -12,5 +9,9 @@
   .renter-name,
   .due-date {
     color: var(--text);
+  }
+
+  .rental-row-expansion-info {
+    gap: 2px;
   }
 }
