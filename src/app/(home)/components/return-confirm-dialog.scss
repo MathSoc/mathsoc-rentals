@@ -1,0 +1,28 @@
+.return-confirm-dialog {
+  gap: 20px;
+
+  .dialog-popup {
+    max-width: 600px;
+  }
+
+  .return-confirm-details {
+    gap: 4px;
+    color: var(--text-light);
+
+    .return-confirm-secondary {
+      font-size: 0.85rem;
+    }
+
+    .return-confirm-highlight {
+      color: var(--text);
+    }
+  }
+
+  .return-confirm-actions {
+    &.row {
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+  }
+}

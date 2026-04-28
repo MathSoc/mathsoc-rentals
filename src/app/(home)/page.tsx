@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Column, Row } from "../components/layout/layout-components";
 import { ExpandedCopy, getCopies } from "../util/worker-requests/copies";
+import { ReturnConfirmDialog } from "./components/return-confirm-dialog";
 
 export default function Home() {
   const [pageIndex, setPageIndex] = useState(0);
@@ -59,6 +60,7 @@ export default function Home() {
 
 function RowExpansion({ copy }: { copy: ExpandedCopy }) {
   const router = useRouter();
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   if (copy.rental === null) {
     return (
@@ -78,14 +80,26 @@ function RowExpansion({ copy }: { copy: ExpandedCopy }) {
   }
 
   return (
-    <Column className="rental-row-expansion">
-      <span>This item is currently out</span>
-      <span>
-        Rented by <span className="renter-name">{copy.renter?.name}</span>
-      </span>
-      <span>
-        Due <span className="due-date">{copy.rental?.dueDate}</span>
-      </span>
-    </Column>
+    <>
+      <Row className="rental-row-expansion">
+        <Column className="rental-row-expansion-info">
+          <span>This item is currently out</span>
+          <span>
+            Rented by <span className="renter-name">{copy.renter?.name}</span>
+          </span>
+          <span>
+            Due <span className="due-date">{copy.rental.dueDate}</span>
+          </span>
+        </Column>
+        <Button size="small" onClick={() => setConfirmOpen(true)}>
+          Return item
+        </Button>
+      </Row>
+      <ReturnConfirmDialog
+        copy={copy}
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+      />
+    </>
   );
 }
