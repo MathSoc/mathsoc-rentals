@@ -110,6 +110,17 @@ The `expand` parameter is a string array of relation names (e.g. `["items", "act
 ### Multi-step wizard pattern
 Lift all state to a parent component. Each step is its own sub-component receiving only the props and callbacks it needs. The parent renders one step at a time using `? ... : null`.
 
+### Debouncing
+Use `useDebounced` and `useDebouncedState` from `src/app/util/hooks.ts`. Do not hand-roll debounce logic with `useRef` + `useEffect` — React's effect scheduling makes that pattern unreliable.
+
+```tsx
+// debounce a derived value (e.g. for a query key)
+const debouncedQuery = useDebounced(inputValue.trim(), 500);
+
+// debounce state itself (returns [debouncedValue, setValue])
+const [debouncedSearch, setSearch] = useDebouncedState("", 500);
+```
+
 ### Passing display data via URL params
 When navigating to a page that only needs data for display (not mutation), pass it via URL search params to avoid an extra fetch. The server component page reads `searchParams` (a `Promise` in Next.js 16) and passes the values as props to the client component.
 
