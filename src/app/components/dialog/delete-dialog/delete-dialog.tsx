@@ -20,12 +20,10 @@ export function DeleteDialog({
     <Dialog open={open} onOpenChange={setOpen} title="Delete club">
       <p>Are you sure you want to delete &quot;{title}&quot;?</p>
       <Column className="buttons">
-        <Button variant="destructive" onClick={onDeleteConfirm}>
+        <Button subvariant="destructive" onClick={onDeleteConfirm}>
           Confirm
         </Button>
-        <Button variant="white" onClick={() => setOpen(false)}>
-          Cancel
-        </Button>
+        <Button onClick={() => setOpen(false)}>Cancel</Button>
       </Column>
     </Dialog>
   );

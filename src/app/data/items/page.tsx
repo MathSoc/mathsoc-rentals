@@ -47,11 +47,7 @@ export default function ItemsPage() {
           ]}
           onRowClick={setSelectedItem}
           title="Items"
-          cta={
-            <Button variant="white" onClick={() => setCreateOpen(true)}>
-              Create new
-            </Button>
-          }
+          cta={<Button onClick={() => setCreateOpen(true)}>Create new</Button>}
           getRowKey={(item) => item.id}
           getRowAriaLabel={(item) => `Edit ${item.name}`}
         />

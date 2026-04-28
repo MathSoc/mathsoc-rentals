@@ -40,11 +40,7 @@ export default function RentersPage() {
           ]}
           onRowClick={setSelectedRenter}
           title="Renters"
-          cta={
-            <Button variant="white" onClick={() => setCreateOpen(true)}>
-              Create new
-            </Button>
-          }
+          cta={<Button onClick={() => setCreateOpen(true)}>Create new</Button>}
           getRowKey={(renter) => renter.id}
           getRowAriaLabel={(renter) => `Edit ${renter.name}`}
         />

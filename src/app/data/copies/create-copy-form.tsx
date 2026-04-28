@@ -175,7 +175,7 @@ export const CreateCopyForm: React.FC<CreateCopyFormProps> = ({
         </select>
       </Column>
 
-      <Button variant="pink" disabled={isPending}>
+      <Button variant="primary" disabled={isPending}>
         {isPending ? "Creating..." : "Create copy"}
       </Button>
     </DrawerForm>

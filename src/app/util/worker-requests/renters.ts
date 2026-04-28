@@ -1,3 +1,4 @@
+import { SearchSelectItem } from "@/app/components/search-select/search-select.client";
 import { Page, PagedResponse, Renter } from "../types";
 
 export async function getRenters(
@@ -49,6 +50,14 @@ export async function sendModifyRenterRequest(payload: ModifyRenterPayload) {
   });
   if (!res.ok) throw new Error("Failed to update renter");
   return res.json();
+}
+
+export async function searchRenters(q: string): Promise<SearchSelectItem[]> {
+  const params = new URLSearchParams({ page_size: "20", page_index: "0", q });
+  const res = await fetch(`/api/renters?${params}`);
+  if (!res.ok) throw new Error("Failed to search renters");
+  const data: PagedResponse<Renter> = await res.json();
+  return data.data.map((r) => ({ label: `${r.name} (${r.email})`, value: r.id }));
 }
 
 export async function sendDeleteRenterRequest(id: string) {

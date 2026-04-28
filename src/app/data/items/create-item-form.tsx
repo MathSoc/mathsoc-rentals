@@ -62,7 +62,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
         />
       ) : null}
 
-      <Button variant="pink" disabled={isPending}>
+      <Button variant="primary" disabled={isPending}>
         {isPending ? "Creating..." : "Create item"}
       </Button>
     </DrawerForm>

@@ -101,12 +101,12 @@ export const ModifyItemForm: React.FC<ModifyItemFormProps> = ({
         ) : null}
 
         <Column className="buttons">
-          <Button variant="pink" onClick={() => {}} disabled={isPending}>
+          <Button variant="primary" onClick={() => {}} disabled={isPending}>
             {isModificationPending ? "Saving..." : "Save changes"}
           </Button>
 
           <Button
-            variant="destructive"
+            subvariant="destructive"
             type="button"
             onClick={() => setDeleteDialogOpen(true)}
             disabled={isPending}

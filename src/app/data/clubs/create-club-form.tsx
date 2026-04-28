@@ -49,7 +49,7 @@ export const CreateClubForm: React.FC<CreateClubFormProps> = ({
         />
       </Column>
 
-      <Button variant="pink" disabled={isPending}>
+      <Button variant="primary" disabled={isPending}>
         {isPending ? "Creating..." : "Create club"}
       </Button>
     </DrawerForm>

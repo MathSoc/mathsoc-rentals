@@ -91,29 +91,32 @@ export function Table<T>({
           </thead>
           <tbody>
             {rows
-              ? rows.map((row, rowIndex) => (
-                  <Fragment key={getRowKey(row)}>
-                    <tr
-                      className={`data-table-row ${rowIndex % 2 === 0 ? "even" : "odd"}`}
-                      onClick={() => handleRowClick(row)}
-                      onKeyDown={(e) => handleRowKeyDown(e, row)}
-                      aria-label={getRowAriaLabel(row)}
-                    >
-                      {columns.map((col, i) => (
-                        <td key={i}>{col.cell(row)}</td>
-                      ))}
-                    </tr>
-                    {row === expandedRow ? (
+              ? rows.map((row, rowIndex) => {
+                  const isExpanded = row === expandedRow;
+                  return (
+                    <Fragment key={getRowKey(row)}>
                       <tr
-                        className={`row-expansion ${rowIndex % 2 === 0 ? "even" : "odd"}`}
+                        className={`data-table-row ${rowIndex % 2 === 0 ? "even" : "odd"} ${isExpanded ? "expanded" : ""}`}
+                        onClick={() => handleRowClick(row)}
+                        onKeyDown={(e) => handleRowKeyDown(e, row)}
+                        aria-label={getRowAriaLabel(row)}
                       >
-                        <td colSpan={columns.length}>
-                          {getExpandedRowContents?.(row)}
-                        </td>
+                        {columns.map((col, i) => (
+                          <td key={i}>{col.cell(row)}</td>
+                        ))}
                       </tr>
-                    ) : null}
-                  </Fragment>
-                ))
+                      {isExpanded ? (
+                        <tr
+                          className={`row-expansion ${rowIndex % 2 === 0 ? "even" : "odd"}`}
+                        >
+                          <td colSpan={columns.length}>
+                            {getExpandedRowContents?.(row)}
+                          </td>
+                        </tr>
+                      ) : null}
+                    </Fragment>
+                  );
+                })
               : null}
           </tbody>
         </table>

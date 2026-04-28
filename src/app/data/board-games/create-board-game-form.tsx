@@ -117,7 +117,7 @@ export const CreateBoardGameForm: React.FC<CreateBoardGameFormProps> = ({
         />
       </Column>
 
-      <Button variant="pink" disabled={isPending}>
+      <Button variant="primary" disabled={isPending}>
         {isPending ? "Creating..." : "Create board game"}
       </Button>
     </DrawerForm>

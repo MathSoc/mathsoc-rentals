@@ -27,9 +27,7 @@ export default function AuthDebug() {
             style={{ objectFit: "contain" }}
           />
         </div>
-        <Button onClick={() => signIn("google")} variant="alt">
-          sign in
-        </Button>
+        <Button onClick={() => signIn("google")}>sign in</Button>
       </Backdrop>
     </main>
   );

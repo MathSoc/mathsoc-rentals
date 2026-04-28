@@ -159,3 +159,18 @@ table {
 .root {
   isolation: isolate;
 }
+
+.backdrop,
+.dialog {
+  button,
+  input,
+  select,
+  label {
+    background-color: var(--background-3);
+  }
+
+  label {
+    padding: 4px 8px;
+    border-radius: 6px 6px 0 0;
+  }
+}
