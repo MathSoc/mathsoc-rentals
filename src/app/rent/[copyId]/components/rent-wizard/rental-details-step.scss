@@ -1,0 +1,9 @@
+.rent-wizard-copy-details,
+.rent-wizard-renter-details {
+  gap: 2px;
+
+  .rent-wizard-copy-detail-secondary {
+    color: var(--text-light);
+    font-size: 0.85rem;
+  }
+}
