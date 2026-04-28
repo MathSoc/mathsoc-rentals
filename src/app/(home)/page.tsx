@@ -2,9 +2,11 @@
 
 import "./home.scss";
 
+import { Button } from "@/app/components/button/button.client";
 import { Page } from "@/app/components/page/page-component";
 import { Table } from "@/app/components/table/table.client";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Column } from "../components/layout/layout-components";
 import { ExpandedCopy, getCopies } from "../util/worker-requests/copies";
@@ -56,6 +58,26 @@ export default function Home() {
 }
 
 function RowExpansion({ copy }: { copy: ExpandedCopy }) {
+  const router = useRouter();
+
+  if (copy.rental === null) {
+    return (
+      <Column className="rental-row-expansion">
+        <Button
+          variant="lighter"
+          size="small"
+          onClick={() =>
+            router.push(
+              `/rent/${copy.id}?item=${encodeURIComponent(copy.item?.name ?? "")}&barcode=${encodeURIComponent(copy.barcode)}`,
+            )
+          }
+        >
+          Rent
+        </Button>
+      </Column>
+    );
+  }
+
   return (
     <Column className="rental-row-expansion">
       <span>This item is currently out</span>

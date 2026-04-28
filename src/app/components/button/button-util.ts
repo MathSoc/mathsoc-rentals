@@ -1,6 +1,6 @@
 export type ButtonProps = {
   children: React.ReactNode;
-  variant: "pink" | "white" | "alt" | "destructive";
+  variant: "pink" | "white" | "alt" | "lighter" | "destructive";
   size?: "small" | "default";
   disabled?: boolean;
   type?: "button" | "submit" | "reset";

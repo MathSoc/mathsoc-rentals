@@ -1,0 +1,36 @@
+.rent-wizard {
+  margin: 0 auto;
+  gap: 24px;
+
+  .rent-wizard-header {
+    align-items: center;
+  }
+
+  .rent-wizard-step {
+    padding: 24px;
+    gap: 20px;
+
+    h2 {
+      margin: 0;
+    }
+  }
+
+  .rent-wizard-review {
+    gap: 12px;
+
+    .rent-wizard-review-row {
+      justify-content: space-between;
+      gap: 16px;
+
+      .rent-wizard-review-label {
+        color: var(--text-light);
+        min-width: 120px;
+      }
+    }
+  }
+
+  .rent-wizard-nav {
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+}

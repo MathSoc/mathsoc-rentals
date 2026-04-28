@@ -1,0 +1,107 @@
+.stepper {
+  $circle-size: 32px;
+  $connector-height: 2px;
+
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  padding: 16px 32px;
+
+  .stepper-item-group {
+    display: flex;
+    align-items: center;
+    flex: 1;
+
+    &:last-child {
+      flex: 0;
+    }
+  }
+
+  .stepper-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+
+    .stepper-circle {
+      width: $circle-size;
+      height: $circle-size;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition:
+        background-color var(--transition),
+        border-color var(--transition),
+        color var(--transition);
+    }
+
+    .stepper-label {
+      font-size: 0.75rem;
+      white-space: nowrap;
+      transition: color var(--transition);
+    }
+
+    &.completed {
+      .stepper-circle {
+        background-color: var(--pink);
+        border: 2px solid var(--pink);
+        color: #fff;
+
+        svg {
+          width: 12px;
+          height: 12px;
+          stroke: #fff;
+          stroke-width: 2;
+          fill: none;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+      }
+
+      .stepper-label {
+        color: var(--text);
+      }
+    }
+
+    &.active {
+      .stepper-circle {
+        background-color: var(--pink);
+        border: 2px solid var(--pink);
+        color: #fff;
+      }
+
+      .stepper-label {
+        color: var(--text);
+        font-weight: 600;
+      }
+    }
+
+    &.pending {
+      .stepper-circle {
+        background-color: transparent;
+        border: 2px solid var(--border-color);
+        color: var(--text-light);
+      }
+
+      .stepper-label {
+        color: var(--text-light);
+      }
+    }
+  }
+
+  .stepper-connector {
+    flex: 1;
+    height: $connector-height;
+    background-color: var(--border-color);
+    margin-bottom: calc($circle-size / 2 + 8px + 0.75rem / 2);
+    transition: background-color var(--transition);
+
+    &.completed {
+      background-color: var(--pink);
+    }
+  }
+}

@@ -42,6 +42,10 @@ a.button:visited {
     }
   }
 
+  &.lighter {
+    background-color: var(--background-3);
+  }
+
   &.destructive {
     color: var(--destructive);
     border-color: var(--destructive);
